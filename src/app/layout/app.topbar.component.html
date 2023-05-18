@@ -1,0 +1,18 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo">
+        <img src="assets/layout/images/vermeg.png" alt="logo">
+        <span>VERMEG</span>
+    </a>
+
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+       
+    </button>
+
+    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+       
+    </div>
+</div>
