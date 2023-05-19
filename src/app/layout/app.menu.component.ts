@@ -51,7 +51,7 @@ export class AppMenuComponent implements OnInit {
                    
                             {
                                 label: 'Logout',
-                                icon: 'pi pi-fw pi-sign-in',
+                                icon: 'pi pi-fw pi-sign-out',
                                 command: () => this.logout()
                             },
                 ]

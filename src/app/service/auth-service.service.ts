@@ -18,7 +18,7 @@ export class AuthServiceService {
 
                    apiURL: string = 'http://localhost:8090/visa';
                    token!:string;
-  constructor(private router : Router, private http : HttpClient) { }
+  constructor(private router : Router, private http : HttpClient) {this.loadToken();}
 
   login(user: User) {
     return this.http.post<User>(this.apiURL + '/login', user, { observe: 'response' });
@@ -40,7 +40,12 @@ export class AuthServiceService {
 
     loadToken() {
     this.token = localStorage.getItem('jwt')!;
-    this.decodeJWT();
+    if (this.token) {
+      this.decodeJWT();
+    } else {
+      // Handle the situation when the token is not available
+      // Probably, you want to redirect the user to the login page
+    }
     }
 
   getToken(): string{
@@ -70,7 +75,6 @@ export class AuthServiceService {
    return this.roles.indexOf('ADMIN') >=0;
    }
 
-
    logout() {
     this.loggedUser = undefined!;
     this.roles = undefined!;
@@ -86,9 +90,14 @@ export class AuthServiceService {
     //this.getUserRoles(login);
   }
 
-  isTokenExpired(): Boolean
-{
-return this.helper.isTokenExpired(this.token); }
+  isTokenExpired(): Boolean{  
+  if (this.helper.isTokenExpired(this.token)) {
+    // Token is expired. Handle this situation.
+    this.router.navigate(['/']);
+    return true;
+  }
+  return false;
+}
   
   /*getUserRoles(username: string) {
     this.users.forEach((curUser) => {

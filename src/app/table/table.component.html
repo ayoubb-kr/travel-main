@@ -11,8 +11,8 @@
         
     </p-toolbar>
  
-    <p-table #dt [value]="users" [rows]="6" [paginator]="true" [globalFilterFields]="['username']"
-        [(selection)]="selectedUsers" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="users" [rows]="6" [paginator]="true" [globalFilterFields]="['user_id','roles','username']"
+        [(selection)]="selectedUsers" [rowHover]="true" dataKey="user_id"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="p-d-flex p-ai-center p-jc-between">
@@ -29,7 +29,7 @@
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="userid">user_id <p-sortIcon field="user_id"></p-sortIcon></th>
+                <th pSortableColumn="user_id">user_id <p-sortIcon field="user_id"></p-sortIcon></th>
                 <th pSortableColumn="username">username <p-sortIcon field="username"></p-sortIcon></th>
                 <th pSortableColumn="password" >password <p-sortIcon field="password"></p-sortIcon></th>
                 <th pSortableColumn="role">role <p-sortIcon field="role"></p-sortIcon></th>
@@ -45,7 +45,7 @@
               <td>{{user.user_id}}</td>
               <td>{{user.username}}</td>
               <td>********</td>
-              <td>{{user.roles}}</td>
+              <td>{{getRoleNames(user)}}</td>
             <!-- <td>{{user.numpasseport}}</td> -->
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editUser(user)"></button>
@@ -79,11 +79,6 @@
                 <label for="password">password</label>
                 <textarea id="password" pInputTextarea  [(ngModel)]="user.password" ></textarea>
                 <small class="p-invalid" *ngIf="submitted && !user.password">role is required.</small>
-            </div>
-            <div class="p-field p-col">
-                <label for="id">user_id</label>
-                <p-inputNumber id="id"   [(ngModel)]="user.user_id"></p-inputNumber>
-                <small class="p-invalid" *ngIf="submitted && !user.user_id">id is required.</small>
             </div>
         </div>
     </ng-template>

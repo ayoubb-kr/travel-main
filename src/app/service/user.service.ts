@@ -13,9 +13,9 @@ export class UserService {
   User!: User;
   apiURL: string = 'http://localhost:8090/visa/api/user';
   constructor(private http : HttpClient, private authService: AuthServiceService) {
-    
-
     this.users = [];
+
+   
   }
   ListUsers(): Observable<User[]> {
     const url = `${this.apiURL}/all`;
@@ -32,7 +32,7 @@ export class UserService {
 
     return this.http.post<Pays>(this.apiURL, pay, { headers: httpHeaders });
   }
-  supprimerPays(id: number) {
+  supprimerUser(id: number) {
     const url = `${this.apiURL}/${id}`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;

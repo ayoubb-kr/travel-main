@@ -35,8 +35,8 @@ export class VisaService {
 
     return this.http.post<Pays>(this.apiURL, pay, { headers: httpHeaders });
   }
-  supprimerPays(id: number) {
-    const url = `${this.apiURL}/${id}`;
+  supprimerPays(user_id: number) {
+    const url = `${this.apiURL}/${user_id}`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })

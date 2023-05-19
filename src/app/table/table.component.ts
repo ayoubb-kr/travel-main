@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { MasterService } from 'src/app/service/master.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from '../model/User.model';
 import { UserService } from '../service/user.service';
+import { Role } from '../model/Role.model';
 
 @Component({
   selector: 'app-table',
@@ -18,10 +18,13 @@ export class TableComponent {
     submitted!: boolean;
   
     
-  constructor(private productService: MasterService, private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService ) {
+  constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService ) {
     this.selectedUsers = [];
   }
-
+  // Function in your component class
+  getRoleNames(user: User) {
+    return user.roles.join(', ');
+}
   ngOnInit() {
     this.chargedata();
   }
@@ -55,9 +58,19 @@ openNew() {/*
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.users = this.users.filter(val => !this.selectedUsers.includes(val));
+        // Iterating over all selected users
+        this.selectedUsers.forEach(user => {
+          // Calling supprimerUser() to send a DELETE request to your backend API
+          this.userService.supprimerUser(user.user_id as number).subscribe(response => {
+            // On successful deletion from the backend, remove the user from the local users array
+            this.users = this.users.filter(val => val.user_id !== user.user_id);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
+          }, error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete User', life: 3000 });
+          });
+        });
+        // Clear the selected users
         this.selectedUsers = [];
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Users Deleted', life: 3000 });
       }
     });
   }
