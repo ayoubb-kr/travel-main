@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Pays } from '../model/Pays.model';
+
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
@@ -24,14 +24,6 @@ export class UserService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.get<User[]>(url, { headers: httpHeaders });
   }
-
-  ajouterPays(pay: Pays):Observable<Pays> {
-    let jwt = this.authService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-
-    return this.http.post<Pays>(this.apiURL, pay, { headers: httpHeaders });
-  }
   supprimerUser(id: number) {
     const url = `${this.apiURL}/${id}`;
     let jwt = this.authService.getToken();
@@ -39,6 +31,15 @@ export class UserService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.delete(url, { headers: httpHeaders });
   }
+/*
+  ajouterPays(pay: Pays):Observable<Pays> {
+    let jwt = this.authService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+
+    return this.http.post<Pays>(this.apiURL, pay, { headers: httpHeaders });
+  }
+
   consulterPays(id: number): Observable<Pays> {
     const url = `${this.apiURL}/${id}`;
     let jwt = this.authService.getToken();
@@ -52,5 +53,5 @@ export class UserService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
    return this.http.put<Pays>(this.apiURL, p,  { headers: httpHeaders });
   }
-
+*/
 }

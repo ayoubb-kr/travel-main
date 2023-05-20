@@ -16,15 +16,17 @@ export class TableComponent {
     user!: User;
     selectedUsers!: User[];
     submitted!: boolean;
-  
+    newidCat! : number;
     
   constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService ) {
     this.selectedUsers = [];
+    
   }
   // Function in your component class
-  getRoleNames(user: User) {
-    return user.roles.join(', ');
-}
+  displayRoles(roles: Role[]): string {
+    return roles.map(role => role.role).join(', ');
+  }
+
   ngOnInit() {
     this.chargedata();
   }

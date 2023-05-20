@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Continent } from '../model/Continent.model';
-import { Pays } from '../model/Pays.model';
+
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ContinentWrapper } from '../model/ContinentWrapper.model';
@@ -10,14 +10,16 @@ const httpOptions = {headers: new HttpHeaders( {'Content-Type': 'application/jso
   providedIn: 'root'
 })
 export class VisaService {
+  /*
   pays: Pays[];
   Pay!: Pays;
+  
   apiURL: string = 'http://localhost:8090/pays/api';
   apiURLCat: string = 'http://localhost:8090/pays/cat';
   
   constructor(private http : HttpClient, private authService: AuthServiceService) {
     
-
+/*
     this.pays = [];
   }
   ListPays(): Observable<Pays[]> {
@@ -72,5 +74,6 @@ export class VisaService {
     }
     AddContinent( cat: Continent):Observable<Continent>{
       return this.http.post<Continent>(this.apiURLCat, cat, httpOptions);
-      }
+      }*/
+
 }

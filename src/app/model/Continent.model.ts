@@ -1,6 +1,6 @@
 export class Continent {
-     idCat! : number;
-	nomcont! : string;
-	 km! : number;
+	idVisa ! : string;
+	VisaExpDate! : Date;
+	jours! : number;
 	population! : string;
 }

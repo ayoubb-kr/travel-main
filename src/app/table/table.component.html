@@ -32,7 +32,7 @@
                 <th pSortableColumn="user_id">user_id <p-sortIcon field="user_id"></p-sortIcon></th>
                 <th pSortableColumn="username">username <p-sortIcon field="username"></p-sortIcon></th>
                 <th pSortableColumn="password" >password <p-sortIcon field="password"></p-sortIcon></th>
-                <th pSortableColumn="role">role <p-sortIcon field="role"></p-sortIcon></th>
+                <th pSortableColumn="roles">role <p-sortIcon field="roles"></p-sortIcon></th>
                 <!-- <th pSortableColumn="numpasseport">numpasseport <p-sortIcon field="numpasseport"></p-sortIcon></th> -->
                 <th></th>
             </tr>
@@ -45,7 +45,7 @@
               <td>{{user.user_id}}</td>
               <td>{{user.username}}</td>
               <td>********</td>
-              <td>{{getRoleNames(user)}}</td>
+              <td>{{displayRoles(user.roles)}}</td>
             <!-- <td>{{user.numpasseport}}</td> -->
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editUser(user)"></button>
