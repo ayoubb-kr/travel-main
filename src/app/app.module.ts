@@ -39,11 +39,16 @@ import { MasterService } from 'src/app/service/master.service';
 import { LoginModule } from './login/login.module';
 import { UserService } from './service/user.service';
 import { VisaService } from './service/visa.service';
+import { AccessModule } from './access/access.module';
+import { ListVisaComponent } from './list-visa/list-visa.component';
+import { ListPassportComponent } from './list-passport/list-passport.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
+    ListVisaComponent,
+    ListPassportComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +78,7 @@ import { VisaService } from './service/visa.service';
     TagModule,
     LoginModule,
     BrowserAnimationsModule,
+    AccessModule,
     
   ],
   providers: [MasterService, MessageService, ConfirmationService,UserService,VisaService],

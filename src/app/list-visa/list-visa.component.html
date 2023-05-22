@@ -1,0 +1,101 @@
+<p-toast></p-toast>
+ 
+ 
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisa()" [disabled]="!selectedVisas || !selectedVisas.length"></button>
+        </ng-template>
+ 
+        
+    </p-toolbar>
+ 
+    <p-table #dt [value]="visas" [rows]="6" [paginator]="true" [globalFilterFields]="['idVisa','VisaExpDate','username']"
+        [(selection)]="selectedVisas" [rowHover]="true" dataKey="idVisa"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Manage Visa</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+ 
+                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Search" />         
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="idVisa">Visa ID<p-sortIcon field="idVisa"></p-sortIcon></th>
+                <th pSortableColumn="VisaExpDate">VisaExpDate <p-sortIcon field="VisaExpDate"></p-sortIcon></th>
+                <th pSortableColumn="jours" >Day <p-sortIcon field="jours"></p-sortIcon></th>
+                <th pSortableColumn="mois">Month <p-sortIcon field="mois"></p-sortIcon></th>
+                <th pSortableColumn="Passport">Passport ID <p-sortIcon field="Passport"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-visa>
+            <tr>
+              <td>
+              <p-tableCheckbox [value]="visa"></p-tableCheckbox>
+              </td>
+              <td>{{visa.idVisa}}</td>
+              <td>{{visa.VisaExpDate}}</td>
+              <td>{{visa.jours}}</td>
+              <td>{{visa.mois}}</td>
+             <!--   <td>{{displayRoles(user.roles)}}</td> -->
+             <td>{{ visa.passport.idPass }}</td>
+              <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editVisa(visa)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deleteVisa(visa)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{visas ? visas.length : 0 }} visas.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+ 
+<p-dialog [(visible)]="visaDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="idVisa">user_Name</label>
+            <input type="text" pInputText id="idVisa" [(ngModel)]="visa.idVisa" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !visa.idVisa">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="VisaExpDate">VisaExpDate</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="visa.visaExpDate" required rows="3" cols="20"></textarea>
+            <small class="p-invalid" *ngIf="submitted && !visa.visaExpDate">role is required.</small>
+        </div>
+ 
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="mois">mois</label>
+                <textarea id="mois" pInputTextarea  [(ngModel)]="visa.jours" ></textarea>
+                <small class="p-invalid" *ngIf="submitted && !visa.mois">role is required.</small>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for=" idPass"> idPass</label>
+                <textarea id=" idPass" pInputTextarea  [(ngModel)]="visa.passport.idPass" ></textarea>
+                <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">role is required.</small>
+            </div>
+        </div>
+    </ng-template>
+ 
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+    </ng-template>
+</p-dialog>
+ 
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+

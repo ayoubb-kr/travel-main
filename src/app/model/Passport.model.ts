@@ -1,6 +1,7 @@
+import { Visa } from "./Visa.model";
 
 export class Passport {
     idPass!: string;
-    PassExpDate!: Date;
-    visas!: number;
+    passExpDate!: Date;
+    visas!: Visa[];
 }
