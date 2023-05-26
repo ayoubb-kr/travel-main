@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Continent } from '../model/Continent.model';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ContinentWrapper } from '../model/ContinentWrapper.model';
 import { AuthServiceService } from './auth-service.service';
 import { Visa } from '../model/Visa.model';
 import { Passport } from '../model/Passport.model';
@@ -34,21 +32,35 @@ export class VisaService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.get<Passport[]>(this.apiURLPas, { headers: httpHeaders });
     }
-/*
-  ajouterPays(pay: Pays):Observable<Pays> {
-    let jwt = this.authService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
 
-    return this.http.post<Pays>(this.apiURL, pay, { headers: httpHeaders });
-  }
-  supprimerPays(user_id: number) {
-    const url = `${this.apiURL}/${user_id}`;
+    savePass(p: Passport):Observable<Passport> {
+    const url = `${this.apiURL}/passport`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.delete(url, { headers: httpHeaders });
-  }
+    return this.http.post<Passport>(url, p,{ headers: httpHeaders } );
+    }
+
+
+    deletePass(idPass: string) {
+      const url = `${this.apiURL}/passport/${idPass}`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+      return this.http.delete(url, { headers: httpHeaders });
+    }
+
+    updatePass(p: Passport) : Observable<Passport>{
+      const url = `${this.apiURL}/passport`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+     return this.http.put<Passport>(url, p, { headers: httpHeaders });
+    }
+
+/*
+  
+ 
   consulterPays(id: number): Observable<Pays> {
     const url = `${this.apiURL}/${id}`;
     let jwt = this.authService.getToken();
@@ -56,14 +68,7 @@ export class VisaService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.get<Pays>(url, { headers: httpHeaders });
   }
-  updatePays(p: Pays) : Observable<Pays>{
-    let jwt = this.authService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-   return this.http.put<Pays>(this.apiURL, p,  { headers: httpHeaders });
-  }
  
-
   rechercherParContinent(idCat: number): Observable<Pays[]> {
     const url = `${this.apiURL}/paycont/${idCat}`;
     return this.http.get<Pays[]>(url);

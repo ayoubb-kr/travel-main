@@ -11,15 +11,14 @@ import { VisaService } from '../service/visa.service';
 export class ListPassportComponent {
   passports!: Passport[];
   passport!: Passport;
-  visaDialog!: boolean;
+  passDialog!: boolean;
+  updateDialog!: boolean;
   selectedPassports!: Passport[];
-  submitted!: boolean;
- 
+  submitted: boolean = false;
 constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ) {
   this.selectedPassports = [];
   
 }
-
 ngOnInit() {
   this.chargepass();
 }
@@ -30,46 +29,46 @@ this.visaService.listePass().subscribe(passport => {
     });
 }
 
-openNew() {/*
-  this.user = {};
-  this.submitted = false;
-  this.userDialog = true;
-  */
+openNew() {
+  this.passport = new Passport();
+  this.passDialog = true;
+
 }
 
-
-
-deleteSelectedVisa() {
-  /*
+deleteSelectedPass() {
   this.confirmationService.confirm({
-    message: 'Are you sure you want to delete the selected users?',
+    message: 'Are you sure you want to delete the selected Passports?',
     header: 'Confirm',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
-      // Iterating over all selected users
-      this.selectedUsers.forEach(user => {
-        // Calling supprimerUser() to send a DELETE request to your backend API
-        this.userService.supprimerUser(user.user_id as number).subscribe(response => {
-          // On successful deletion from the backend, remove the user from the local users array
-          this.users = this.users.filter(val => val.user_id !== user.user_id);
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
+      // Iterating over all selected passport
+      this.selectedPassports.forEach(passport => {
+        this.visaService.deletePass(passport.idPass).subscribe(response => {
+          // On successful deletion from the backend, remove the passport from the local passport array
+          this.passports = this.passports.filter(val => val.idPass !== passport.idPass);
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Deleted', life: 3000 });
         }, error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete User', life: 3000 });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete Passport', life: 3000 });
         });
       });
-      // Clear the selected users
-      this.selectedUsers = [];
+      // Clear the selected passports
+      this.selectedPassports = [];
     }
   });
-  */
 }
 
-editVisa(passport: Passport) {
+editPass(passport: Passport) {
   this.passport = { ...passport };
-  this.visaDialog = true;
+  this.updateDialog = true;
 }
 
-deleteVisa(passport: Passport) {/*
+hideDialog() {
+  this.passDialog = false;
+  this.submitted = false;
+  this.updateDialog = false;
+}
+
+deletePass(passport: Passport) {/*
   this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + user.username + '?',
       header: 'Confirm',
@@ -82,41 +81,53 @@ deleteVisa(passport: Passport) {/*
   });*/
 }
 
-hideDialog() {
-  this.visaDialog = false;
-  this.submitted = false;
-}
 
-saveUser() {/*
+
+savePass() {
   this.submitted = true;
 
-  if (this.user.username!.trim() && this.user.password!.trim()) {
-      if (this.user.id) {
-          this.users[this.findIndexById(this.user.id)] = this.user;
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
-      }
-      else {
-         
-          this.users.push(this.user);
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Created', life: 3000});
-      }
-
-      this.users = [...this.users];
-      this.userDialog = false;
-      this.user = {};
-  }*/
-}
-/*
-findIndexById(id: string): number {
-  let index = -1;
-  for (let i = 0; i < this.visas.length; i++) {
-      if (this.visas[i].idVisa === id) {
-          index = i;
-          break;
-      }
+  if (!this.passport.idPass || !this.passport.passExpDate) {
+      // either idPass or passExpDate is empty, so don't proceed
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'idPass and date can not be empty.', life: 3000 });
+      return;
   }
+  const existingPassport = this.passports.find(p => p.idPass === this.passport.idPass);
+  if (existingPassport) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'idPass already exists. Cannot add a new passport.', life: 3000 });
+  } else {
+      this.visaService.savePass(this.passport).subscribe(
+          response => {
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Added', life: 3000 });
+          },
+          error => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Passport', life: 3000 });
+          }
+      );
+  };
 
-  return index;
+  this.passDialog = false;
+  this.passport = new Passport();
+  this.passports = [...this.passports];
 }
-*/
+
+updatePass() {
+  this.visaService.updatePass(this.passport).subscribe(
+    response => {
+      
+      const index = this.passports.findIndex(p => p.idPass === this.passport.idPass);
+      this.passports[index] = this.passport;
+      
+      this.passports = [...this.passports];
+
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Updated', life: 3000 });
+      this.updateDialog = false;
+      this.passport = new Passport();
+    },
+    error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Passport', life: 3000 });
+    }
+  );
+}
+
+
 }

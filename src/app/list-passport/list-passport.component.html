@@ -5,7 +5,7 @@
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisa()" [disabled]="!selectedPassports || !selectedPassports.length"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedPass()" [disabled]="!selectedPassports || !selectedPassports.length"></button>
         </ng-template>
  
         
@@ -42,8 +42,8 @@
               <td>{{passport.idPass}}</td>
               <td>{{passport.passExpDate}}</td>
               <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editVisa(passport)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deleteVisa(passport)"></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editPass(passport)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deletePass(passport)"></button>
               </td>
             </tr>
           </ng-template>
@@ -55,23 +55,39 @@
     </p-table>
 </div>
  
-<p-dialog [(visible)]="visaDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="passDialog" [style]="{width: '450px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field">
-            <label for="idVisa">Passport ID</label>
-            <input type="text" pInputText id="idVisa" [(ngModel)]="passport.idPass" required autofocus />
+            <label for="idPass">Passport ID</label>
+            <input type="text" pInputText id="idPass" [(ngModel)]="passport.idPass" required autofocus />
             <small class="p-invalid" *ngIf="submitted && !passport.idPass">Passport ID is required.</small>
         </div>
         <div class="p-field">
             <label for="VisaExpDate">PassExpDate</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="passport.passExpDate" required rows="3" cols="20"></textarea>
+            <textarea id="description" pInputTextarea [(ngModel)]="passport.passExpDate" required rows="3" cols="20" required autofocus></textarea>
             <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
         </div>
     </ng-template>
  
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="savePass()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="updateDialog" [style]="{width: '450px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+      
+        <div class="p-field">
+            <label for="VisaExpDate">PassExpDate</label>
+            <textarea id="description" pInputTextarea [(ngModel)]="passport.passExpDate" required rows="3" cols="20" required autofocus></textarea>
+            <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
+        </div>
+    </ng-template>
+ 
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="updatePass()"></button>
     </ng-template>
 </p-dialog>
  

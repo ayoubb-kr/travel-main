@@ -61,26 +61,33 @@
     </p-table>
 </div>
  
-<p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Product Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="userDialog" [style]="{width: '450px',height: '550px'}" header="User Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
+
+       
         <div class="p-field">
             <label for="name">user_Name</label>
             <input type="text" pInputText id="name" [(ngModel)]="user.username" required autofocus />
             <small class="p-invalid" *ngIf="submitted && !user.username">Name is required.</small>
         </div>
-        <div class="p-field">
-            <label for="role">role</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="user.roles" required rows="3" cols="20"></textarea>
-            <small class="p-invalid" *ngIf="submitted && !user.roles">role is required.</small>
-        </div>
- 
+       
         <div class="p-formgrid p-grid">
             <div class="p-field p-col">
-                <label for="password">password</label>
-                <textarea id="password" pInputTextarea  [(ngModel)]="user.password" ></textarea>
-                <small class="p-invalid" *ngIf="submitted && !user.password">role is required.</small>
+                <label for="password">Password</label>
+                <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" required autofocus>
+                <small class="p-invalid" *ngIf="submitted && !user.password">Password is required.</small>
             </div>
         </div>
+        
+          <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+              <label for="roles">Roles</label>
+              <p-multiSelect [options]="roles" defaultLabel="Select a Role" [(ngModel)]="user.roles" optionLabel="role" id="roles"></p-multiSelect>
+              <small class="p-invalid" *ngIf="submitted && !user.roles">Roles is required.</small>
+            </div>
+        </div>
+        
+
     </ng-template>
  
     <ng-template pTemplate="footer">

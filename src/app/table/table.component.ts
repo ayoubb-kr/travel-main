@@ -11,25 +11,30 @@ import { Role } from '../model/Role.model';
 })
 export class TableComponent {
 
+    roles: Role[] = [];
     userDialog!: boolean;
     users!: User[];
     user!: User;
     selectedUsers!: User[];
-    submitted!: boolean;
-    newidCat! : number;
+    submitted: boolean = false;
     
   constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService ) {
     this.selectedUsers = [];
     
   }
-  // Function in your component class
+  // show the role only 
   displayRoles(roles: Role[]): string {
     return roles.map(role => role.role).join(', ');
   }
 
   ngOnInit() {
     this.chargedata();
+     this.userService.getRoles().subscribe(
+    data => this.roles = data,
+    error => console.error(error)
+  );
   }
+
 chargedata(){
   this.userService.ListUsers().subscribe(user => {
     console.log(User);
@@ -37,22 +42,12 @@ chargedata(){
       });
 }
 
-get obfuscatedPassword(): string {
-  return this.user.password.replace(/./g, '*');
-}
 
-set obfuscatedPassword(value: string) {
-  this.user.password = value.replace(/\*/g, '');
-}
-
-openNew() {/*
-    this.user = {};
-    this.submitted = false;
+openNew() {
+    this.user = new User();
     this.userDialog = true;
-    */
+    
   }
- 
- 
  
   deleteSelectedUsers() {
     this.confirmationService.confirm({
@@ -62,8 +57,7 @@ openNew() {/*
       accept: () => {
         // Iterating over all selected users
         this.selectedUsers.forEach(user => {
-          // Calling supprimerUser() to send a DELETE request to your backend API
-          this.userService.supprimerUser(user.user_id as number).subscribe(response => {
+          this.userService.deleteUser(user.user_id as number).subscribe(response => {
             // On successful deletion from the backend, remove the user from the local users array
             this.users = this.users.filter(val => val.user_id !== user.user_id);
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
@@ -82,44 +76,62 @@ openNew() {/*
     this.userDialog = true;
   }
  
-  deleteUser(user: User) {/*
+  deleteUser(user: User) {
     this.confirmationService.confirm({
         message: 'Are you sure you want to delete ' + user.username + '?',
         header: 'Confirm',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-            this.users = this.users.filter(val => val.id !== user.id);
-            this.user = {};
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+            if (typeof user.user_id === 'number') {
+                this.userService.deleteUser(user.user_id).subscribe(response => {
+                    this.users = this.users.filter(val => val.user_id !== user.user_id);
+                    this.user = new User();
+                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+                }, error => {
+                    this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete user', life: 3000});
+                });
+            }
         }
-    });*/
-  }
+    });
+}
+
+
 
   hideDialog() {
     this.userDialog = false;
     this.submitted = false;
   }
- 
-  saveUser() {/*
-    this.submitted = true;
 
-    if (this.user.username!.trim() && this.user.password!.trim()) {
-        if (this.user.id) {
-            this.users[this.findIndexById(this.user.id)] = this.user;
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
-        }
-        else {
-           
-            this.users.push(this.user);
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Created', life: 3000});
-        }
+    saveUser() {
+      this.submitted = true;
+    
+      if (this.user.username!.trim() && this.user.password!.trim()) {
+        if (this.user.user_id) {
+            this.userService.updateUser(this.user).subscribe(
+              response => {
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+              },
+              error => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
+              }
+            );
+          } else {
+            this.userService.saveUser(this.user).subscribe(
+              response => {
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
+              },
+              error => {
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
+              }
+            );
+          }
+        };
+      
+      this.users = [...this.users];
+      this.userDialog = false;
+      this.user = new User();
+    }
 
-        this.users = [...this.users];
-        this.userDialog = false;
-        this.user = {};
-    }*/
-  }
- 
   findIndexById(id: number): number {
     let index = -1;
     for (let i = 0; i < this.users.length; i++) {
