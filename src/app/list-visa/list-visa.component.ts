@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Visa } from '../model/Visa.model';
 import { VisaService } from '../service/visa.service';
 import { Passport } from '../model/Passport.model';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-list-visa',
@@ -10,19 +11,26 @@ import { Passport } from '../model/Passport.model';
   styleUrls: ['./list-visa.component.scss']
 })
 export class ListVisaComponent {
+  passports: Passport[] = [];
   visas!: Visa[];
   visa!: Visa;
   visaDialog!: boolean;
   selectedVisas!: Visa[];
-  submitted!: boolean;
+  submitted: boolean = false;
+  updateDialog!: boolean;
  
 constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ) {
   this.selectedVisas = [];
-  
+  this.visa = new Visa();
+  this.visa.passport = new Passport();
 }
 
 ngOnInit() {
   this.chargevisa();
+  this.visaService.listePass().subscribe(
+    passports => this.passports = passports,
+    error => console.error('There was an error!', error)
+  );
 }
 chargevisa(){
 this.visaService.ListVisa().subscribe(visa => {
@@ -31,93 +39,108 @@ this.visaService.ListVisa().subscribe(visa => {
     });
 }
 
-openNew() {/*
-  this.user = {};
-  this.submitted = false;
-  this.userDialog = true;
-  */
-}
-
-
-
-deleteSelectedVisa() {
-  /*
-  this.confirmationService.confirm({
-    message: 'Are you sure you want to delete the selected users?',
-    header: 'Confirm',
-    icon: 'pi pi-exclamation-triangle',
-    accept: () => {
-      // Iterating over all selected users
-      this.selectedUsers.forEach(user => {
-        // Calling supprimerUser() to send a DELETE request to your backend API
-        this.userService.supprimerUser(user.user_id as number).subscribe(response => {
-          // On successful deletion from the backend, remove the user from the local users array
-          this.users = this.users.filter(val => val.user_id !== user.user_id);
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
-        }, error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete User', life: 3000 });
-        });
-      });
-      // Clear the selected users
-      this.selectedUsers = [];
-    }
-  });
-  */
-}
-
-editVisa(visa: Visa) {
-  this.visa = { ...visa };
+openNew() {
+  this.visa = new Visa();
+  this.visa.passport = this.visa.passport || new Passport(); 
+  this.visa.passport.idPass = this.visa.passport.idPass;
   this.visaDialog = true;
 }
 
-deleteVisa(visa: Visa) {/*
+
+
+
+editVisa(visa: Visa) {
+  this.visa = { ...visa };
+  this.updateDialog= true;
+
+}
+
+deleteVisa(visa: Visa) {
   this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + user.username + '?',
+      message: 'Are you sure you want to delete ' + visa.idVisa + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this.users = this.users.filter(val => val.id !== user.id);
-          this.user = {};
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
-      }
-  });*/
+        this.visaService.deleteVisa(visa.idVisa).subscribe(response => {
+          this.visas = this.visas.filter(val => val.idVisa !== visa.idVisa);
+          this.visa = new Visa();
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Visa Deleted', life: 3000});
+        }, error => {
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Visa', life: 3000});
+        });
+    }
+  });
 }
 
 hideDialog() {
   this.visaDialog = false;
   this.submitted = false;
+  this.updateDialog = false;
 }
 
-saveUser() {/*
-  this.submitted = true;
+saveVisa() {
 
-  if (this.user.username!.trim() && this.user.password!.trim()) {
-      if (this.user.id) {
-          this.users[this.findIndexById(this.user.id)] = this.user;
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
-      }
-      else {
-         
-          this.users.push(this.user);
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Created', life: 3000});
-      }
+  this.visaService.saveVisa(this.visa).subscribe(
+        response => {
+          console.log('Visa saved successfully!');
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visa Added', life: 3000 });
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Visa', life: 3000 });
+          console.error('There was an error!', error);
+        }
+      );
+      this.visaDialog = false;
+      this.visa = new Visa();
+      this.visas = [...this.visas];
+      this.visa.passport = {idPass: ''};
+    }
+  
+    updatePass() {
+  
+      this.visaService.updateVisa(this.visa).subscribe(
+        response => {
+          
+          const index = this.visas.findIndex(v => v.idVisa === this.visa.idVisa);
+          this.visas[index] = this.visa;
+          
+          this.visas = [...this.visas];
+    
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Updated', life: 3000 });
+          this.updateDialog= false;
+          this.visa = new Visa();
+          this.visa.passport = {idPass: ''};
+           
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Passport', life: 3000 });
+        }
+      );
+    }
+  
 
-      this.users = [...this.users];
-      this.userDialog = false;
-      this.user = {};
-  }*/
-}
-/*
-findIndexById(id: string): number {
-  let index = -1;
-  for (let i = 0; i < this.visas.length; i++) {
-      if (this.visas[i].idVisa === id) {
-          index = i;
-          break;
-      }
-  }
+    deleteSelectedVisa() {
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to delete the selected users?',
+        header: 'Confirm',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          // Iterating over all selected visa
+          this.selectedVisas.forEach(visa => {
+            // Calling deleteVisa() to send a DELETE request to your backend API
+            this.visaService.deleteVisa(visa.idVisa).subscribe(response => {
+              // On successful deletion from the backend, remove the user from the local users array
+              this.visas = this.visas.filter(val => val.idVisa !== visa.idVisa);
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
+            }, error => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete User', life: 3000 });
+            });
+          });
+          // Clear the selected users
+          this.selectedVisas = [];
+        }
+      });
+    }
+    
 
-  return index;
-}
-*/
 }

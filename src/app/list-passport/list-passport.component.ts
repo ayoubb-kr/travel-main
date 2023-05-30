@@ -68,17 +68,22 @@ hideDialog() {
   this.updateDialog = false;
 }
 
-deletePass(passport: Passport) {/*
+deletePass(passport: Passport) {
   this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + user.username + '?',
+      message: 'Are you sure you want to delete ' + passport.idPass + '?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-          this.users = this.users.filter(val => val.id !== user.id);
-          this.user = {};
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
-      }
-  });*/
+       
+        this.visaService.deletePass(passport.idPass).subscribe(response => {
+          this.passports = this.passports.filter(val => val.idPass !== passport.idPass);
+          this.passport = new Passport();
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Passport Deleted', life: 3000});
+        }, error => {
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Passport', life: 3000});
+        });
+    }
+  });
 }
 
 
@@ -88,7 +93,6 @@ savePass() {
 
   if (!this.passport.idPass || !this.passport.passExpDate) {
       // either idPass or passExpDate is empty, so don't proceed
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'idPass and date can not be empty.', life: 3000 });
       return;
   }
   const existingPassport = this.passports.find(p => p.idPass === this.passport.idPass);

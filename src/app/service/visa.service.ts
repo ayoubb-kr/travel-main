@@ -25,7 +25,33 @@ export class VisaService {
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.get<Visa[]>(this.apiURL, { headers: httpHeaders });
   }
+  saveVisa(visa: Visa):Observable<Visa> {
+    let jwt = this.authService.getToken();
+    jwt = "Bearer " + jwt;
+    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+    return this.http.post<Visa>(this.apiURL, visa,{ headers: httpHeaders } );
+    }
+    updateVisa(visa: Visa) : Observable<Visa>{
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+     return this.http.put<Visa>(this.apiURL, visa, { headers: httpHeaders });
+    }
+    
+    deleteVisa(idVisa: string) {
+      const url = `${this.apiURL}/${idVisa}`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+      return this.http.delete(url, { headers: httpHeaders });
+    }
 
+
+
+
+
+
+    
   listePass():Observable<Passport[]>{
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
@@ -34,16 +60,14 @@ export class VisaService {
     }
 
     savePass(p: Passport):Observable<Passport> {
-    const url = `${this.apiURL}/passport`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.post<Passport>(url, p,{ headers: httpHeaders } );
+    return this.http.post<Passport>(this.apiURLPas, p,{ headers: httpHeaders } );
     }
 
-
     deletePass(idPass: string) {
-      const url = `${this.apiURL}/passport/${idPass}`;
+      const url = `${this.apiURLPas}/${idPass}`;
       let jwt = this.authService.getToken();
       jwt = "Bearer " + jwt;
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
@@ -51,12 +75,12 @@ export class VisaService {
     }
 
     updatePass(p: Passport) : Observable<Passport>{
-      const url = `${this.apiURL}/passport`;
       let jwt = this.authService.getToken();
       jwt = "Bearer " + jwt;
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-     return this.http.put<Passport>(url, p, { headers: httpHeaders });
+     return this.http.put<Passport>(this.apiURLPas, p, { headers: httpHeaders });
     }
+    
 
 /*
   

@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from 'src/app/model/User.model';
+import { Role } from '../model/Role.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
-  /*users: User[] = [{"username":"admin","password":"123","roles":['ADMIN']},
-                   {"username":"nadhem","password":"123","roles":['USER']} ];*/
+
 
                    public loggedUser!:string;
                    public isloggedIn: Boolean = false;
@@ -90,22 +90,14 @@ export class AuthServiceService {
     //this.getUserRoles(login);
   }
 
-  isTokenExpired(): Boolean{  
-  if (this.helper.isTokenExpired(this.token)) {
-    // Token is expired. Handle this situation.
-    this.router.navigate(['/']);
-    return true;
+  isTokenExpired(): boolean {
+    return this.helper.isTokenExpired(this.token);
   }
-  return false;
-}
-  
-  /*getUserRoles(username: string) {
-    this.users.forEach((curUser) => {
-      if (curUser.username == username) {
-        this.roles = curUser.roles;
-      }
-    });
-  }*/
 
+getUserRoles(): string[] {
+  const token = this.getToken();
+  const decodedToken = this.helper.decodeToken(token);
+  return decodedToken.roles; 
+}
 
 }

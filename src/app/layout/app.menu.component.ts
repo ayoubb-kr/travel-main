@@ -2,6 +2,17 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 import { AuthServiceService } from '../service/auth-service.service';
+import { UserService } from '../service/user.service';
+import { Role } from '../model/Role.model';
+
+interface MenuItem {
+    label: string;
+    icon?: string;
+    routerLink?: string[];
+    roles?: string[];
+    items?: MenuItem[];
+    command?: () => void;
+}
 
 @Component({
     selector: 'app-menu',
@@ -10,12 +21,15 @@ import { AuthServiceService } from '../service/auth-service.service';
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+    
 
-    constructor(public layoutService: LayoutService, private authService : AuthServiceService) { }
+    constructor(public layoutService: LayoutService, private authService : AuthServiceService ,private userService : UserService ) { }
     logout() {
         this.authService.logout();
     }
     ngOnInit() {
+        const userRoles = this.authService.getUserRoles();
+          
         this.model = [
             {
                 label: '',
@@ -29,8 +43,8 @@ export class AppMenuComponent implements OnInit {
                
                     { label: 'Table Users', icon: 'pi pi-fw pi-table', routerLink: ['/app/table'], roles: ['ADMIN'] },
                     { label: 'List Visa', icon: 'pi pi-fw pi-list', routerLink: ['/app/list-visa'], roles: ['ADMIN', 'USER'] },
-                    { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/app/list-passport'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
+                    { label: 'list passport', icon: 'pi pi-fw pi-database', routerLink: ['/app/list-passport'] ,roles: ['ADMIN','USER'] },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/app/list-roles'] , roles: ['ADMIN'] },
                   
 
                 ]
@@ -43,15 +57,18 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Logout',
                                 icon: 'pi pi-fw pi-sign-out',
-                                command: () => this.logout()
+                                command: () => this.logout(),
+                                roles: ['ADMIN', 'USER', 'TRAVEL_MANAGER']
                             },
                 ]
             },
             
         ];
+        // Filter the model based on the user's role
+        this.model.forEach((menu: MenuItem) => {
+            menu.items = menu.items?.filter((item: MenuItem) => item.roles?.some(role => userRoles.includes(role)));
+        });
     }
-    hasRole(roles: string[]): boolean {
-        const userRoles = this.authService.roles;
-        return roles.some(role => userRoles.includes(role));
-    }
+   
+   
 }

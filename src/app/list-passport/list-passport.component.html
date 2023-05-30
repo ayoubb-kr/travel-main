@@ -49,13 +49,13 @@
           </ng-template>
         <ng-template pTemplate="summary">
             <div class="p-d-flex p-ai-center p-jc-between">
-                In total there are {{passports ? passports.length : 0 }} visas.
+                In total there are {{passports ? passports.length : 0 }} Passports.
             </div>
         </ng-template>
     </p-table>
 </div>
  
-<p-dialog [(visible)]="passDialog" [style]="{width: '450px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="passDialog" [style]="{width: '450px',height: '700px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field">
             <label for="idPass">Passport ID</label>
@@ -63,8 +63,8 @@
             <small class="p-invalid" *ngIf="submitted && !passport.idPass">Passport ID is required.</small>
         </div>
         <div class="p-field">
-            <label for="VisaExpDate">PassExpDate</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="passport.passExpDate" required rows="3" cols="20" required autofocus></textarea>
+            <label for="PassExpDate">Passport Exp Date</label>
+            <p-calendar id="VisaExpDate" [(ngModel)]="passport.passExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
             <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
         </div>
     </ng-template>
@@ -75,12 +75,13 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="updateDialog" [style]="{width: '450px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="updateDialog" [style]="{width: '450px', height:'650px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
       
         <div class="p-field">
             <label for="VisaExpDate">PassExpDate</label>
-            <textarea id="description" pInputTextarea [(ngModel)]="passport.passExpDate" required rows="3" cols="20" required autofocus></textarea>
+          
+            <p-calendar id="VisaExpDate" [(ngModel)]="passport.passExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
             <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
         </div>
     </ng-template>

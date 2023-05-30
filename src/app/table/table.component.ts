@@ -86,20 +86,17 @@ openNew() {
                 this.userService.deleteUser(user.user_id).subscribe(response => {
                     this.users = this.users.filter(val => val.user_id !== user.user_id);
                     this.user = new User();
-                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Role Deleted', life: 3000});
                 }, error => {
-                    this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete user', life: 3000});
+                    this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Role', life: 3000});
                 });
             }
         }
     });
 }
 
-
-
   hideDialog() {
     this.userDialog = false;
-    this.submitted = false;
   }
 
     saveUser() {
@@ -109,19 +106,19 @@ openNew() {
         if (this.user.user_id) {
             this.userService.updateUser(this.user).subscribe(
               response => {
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 });
               },
               error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Role', life: 3000 });
               }
             );
           } else {
             this.userService.saveUser(this.user).subscribe(
               response => {
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
+                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Added', life: 3000 });
               },
               error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Role', life: 3000 });
               }
             );
           }
@@ -132,16 +129,5 @@ openNew() {
       this.user = new User();
     }
 
-  findIndexById(id: number): number {
-    let index = -1;
-    for (let i = 0; i < this.users.length; i++) {
-        if (this.users[i].user_id === id) {
-            index = i;
-            break;
-        }
-    }
 
-    return index;
-  }
- 
 }
