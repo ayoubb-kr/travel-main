@@ -16,7 +16,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="p-d-flex p-ai-center p-jc-between">
-                <h5 class="p-m-0">Manage Visa</h5>
+                <h5 class="p-m-0">Request Visa</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
  
@@ -29,11 +29,10 @@
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="idVisa">Visa ID<p-sortIcon field="idVisa"></p-sortIcon></th>
-                <th pSortableColumn="VisaExpDate">VisaExpDate <p-sortIcon field="VisaExpDate"></p-sortIcon></th>
-                <th pSortableColumn="jours" >Day <p-sortIcon field="jours"></p-sortIcon></th>
-                <th pSortableColumn="mois">Month <p-sortIcon field="mois"></p-sortIcon></th>
-                <th pSortableColumn="passport">Passport ID <p-sortIcon field="passport"></p-sortIcon></th>
+                <th pSortableColumn="idVisa">Request ID<p-sortIcon field="idVisa"></p-sortIcon></th>
+                <th pSortableColumn="VisaExpDate">Passeport ID <p-sortIcon field="VisaExpDate"></p-sortIcon></th>
+                <th pSortableColumn="jours" >Type <p-sortIcon field="jours"></p-sortIcon></th>
+                <th pSortableColumn="mois">status <p-sortIcon field="mois"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
@@ -55,29 +54,30 @@
           </ng-template>
         <ng-template pTemplate="summary">
             <div class="p-d-flex p-ai-center p-jc-between">
-                In total there are {{visas ? visas.length : 0 }} visas.
+                In total there are {{visas ? visas.length : 0 }} Requests.
             </div>
         </ng-template>
     </p-table>
 </div>
  
-<p-dialog [(visible)]="visaDialog" [style]="{width: '450px',height: '800px'}" header="Visa Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="visaDialog" [style]="{width: '450px'}" header="Visa Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field">
-            <label for="idVisa">Visa ID</label>
+            <label for="idVisa">Request ID</label>
             <input type="text" pInputText id="idVisa" [(ngModel)]="visa.idVisa" required autofocus />
             <small class="p-invalid" *ngIf="submitted && !visa.idVisa">Visa ID is required</small>
         </div>
 
-        <div class="p-field">
-            <label for="VisaExpDate">Visa Expire Date</label>
-            <p-calendar id="VisaExpDate" [(ngModel)]="visa.visaExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
-            <small class="p-invalid" *ngIf="submitted && !visa.visaExpDate">Date is required.</small>
-        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="idPass">Passport ID</label>
+                <textarea id="idPass" pInputTextarea  [(ngModel)]="visa.passport.idPass" required></textarea>
+                <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">Passport ID is required.</small>
+            </div>
  
         <div class="p-formgrid p-grid">
             <div class="p-field p-col">
-                <label for="mois">Month</label>
+                <label for="mois">Type</label>
                 <textarea id="mois" pInputTextarea  [(ngModel)]="visa.mois" ></textarea>
                 <small class="p-invalid" *ngIf="submitted && !visa.mois">Month is required.</small>
             </div>
@@ -85,18 +85,13 @@
 
         <div class="p-formgrid p-grid">
             <div class="p-field p-col">
-                <label for="jours">Day</label>
+                <label for="jours">status</label>
                 <textarea id="jours" pInputTextarea  [(ngModel)]="visa.jours" ></textarea>
                 <small class="p-invalid" *ngIf="submitted && !visa.jours">Day is required.</small>
             </div>
         </div>
 
-    <div class="p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="idPass">Passport ID</label>
-            <textarea id="idPass" pInputTextarea  [(ngModel)]="visa.passport.idPass" required></textarea>
-            <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">Passport ID is required.</small>
-        </div>
+
     </div>
     </ng-template>
  
@@ -147,4 +142,5 @@
     
 </p-dialog>
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
 

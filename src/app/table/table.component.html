@@ -29,11 +29,11 @@
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="user_id">user_id <p-sortIcon field="user_id"></p-sortIcon></th>
-                <th pSortableColumn="username">username <p-sortIcon field="username"></p-sortIcon></th>
-                <th pSortableColumn="password" >password <p-sortIcon field="password"></p-sortIcon></th>
-                <th pSortableColumn="roles">role <p-sortIcon field="roles"></p-sortIcon></th>
-                <!-- <th pSortableColumn="numpasseport">numpasseport <p-sortIcon field="numpasseport"></p-sortIcon></th> -->
+                <th pSortableColumn="user_id">User ID <p-sortIcon field="user_id"></p-sortIcon></th>
+                <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+                <th pSortableColumn="password" >Password <p-sortIcon field="password"></p-sortIcon></th>
+                <th pSortableColumn="roles">Role <p-sortIcon field="roles"></p-sortIcon></th>
+                 <th pSortableColumn="passport">Passeport ID <p-sortIcon field="passport"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
@@ -46,7 +46,9 @@
               <td>{{user.username}}</td>
               <td>********</td>
               <td>{{displayRoles(user.roles)}}</td>
-            <!-- <td>{{user.numpasseport}}</td> -->
+              <td>{{user.passport?.idPass || 'No Passport'}}</td>
+
+
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editUser(user)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deleteUser(user)"></button>
@@ -71,14 +73,6 @@
             <small class="p-invalid" *ngIf="submitted && !user.username">Name is required.</small>
         </div>
        
-        <div class="p-formgrid p-grid">
-            <div class="p-field p-col">
-                <label for="password">Password</label>
-                <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" required autofocus>
-                <small class="p-invalid" *ngIf="submitted && !user.password">Password is required.</small>
-            </div>
-        </div>
-        
           <div class="p-formgrid p-grid">
             <div class="p-field p-col">
               <label for="roles">Roles</label>
@@ -86,7 +80,22 @@
               <small class="p-invalid" *ngIf="submitted && !user.roles">Roles is required.</small>
             </div>
         </div>
-        
+
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="password">Password</label>
+                <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" required autofocus>
+                <small class="p-invalid" *ngIf="submitted && !user.password">Password is required.</small>
+            </div>
+        </div>
+   <div class="p-formgrid p-grid">
+        <div class="p-field p-col">
+            <label for="passportId">Passport ID</label>
+            <p-dropdown [options]="passports" [(ngModel)]="user.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Role"></p-dropdown>
+
+            <small class="p-invalid" *ngIf="submitted && !user.passport.idPass">Passport ID is required.</small>
+        </div>
+    </div>
 
     </ng-template>
  

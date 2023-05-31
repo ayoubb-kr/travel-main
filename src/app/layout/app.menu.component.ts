@@ -34,7 +34,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: '',
                 items: [
-                    { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/app'], roles: ['ADMIN', 'USER'] }
+                    { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/app/Dashbord'], roles: ['ADMIN', 'USER'] }
                 ]
             },
             {
@@ -45,8 +45,11 @@ export class AppMenuComponent implements OnInit {
                     { label: 'List Visa', icon: 'pi pi-fw pi-list', routerLink: ['/app/list-visa'], roles: ['ADMIN', 'USER'] },
                     { label: 'list passport', icon: 'pi pi-fw pi-database', routerLink: ['/app/list-passport'] ,roles: ['ADMIN','USER'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/app/list-roles'] , roles: ['ADMIN'] },
-                  
-
+                    { label: 'My Details', icon: 'pi pi-fw pi-user', routerLink: ['/app/my-details'] , roles: ['ADMIN','USER'] },
+                    { label: 'My Passport',  icon:'pi pi-fw pi-id-card', routerLink: ['/app/my-passport'] , roles: ['ADMIN','USER'] },
+                    { label: 'Request',  icon:'pi pi-fw pi-file-import', routerLink: ['/app/request'] , roles: ['ADMIN','USER'] },
+                    { label: 'mission',  icon:'pi pi-fw pi-briefcase', routerLink: ['/app/mission'] , roles: ['ADMIN','USER'] },
+                    
                 ]
             },
             {

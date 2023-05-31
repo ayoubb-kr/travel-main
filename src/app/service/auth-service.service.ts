@@ -100,4 +100,13 @@ getUserRoles(): string[] {
   return decodedToken.roles; 
 }
 
+getCurrentUser(): string {
+  const token = this.getToken();
+  if (!token) {
+    this.router.navigate(['/login']);
+  }
+  const decodedToken = this.helper.decodeToken(token);
+  return decodedToken.sub;
+}
+
 }

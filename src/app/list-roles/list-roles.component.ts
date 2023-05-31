@@ -122,26 +122,4 @@ this.roleDialog = false;
 this.role = new Role();
 }
 
-
-updateRole() {
-  /*
-  this.visaService.updatePass(this.passport).subscribe(
-    response => {
-      
-      const index = this.passports.findIndex(p => p.idPass === this.passport.idPass);
-      this.passports[index] = this.passport;
-      
-      this.passports = [...this.passports];
-
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Updated', life: 3000 });
-      this.updateDialog = false;
-      this.passport = new Passport();
-    },
-    error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Passport', life: 3000 });
-    }
-  );
-  */
-}
-
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { of } from 'rxjs';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthServiceService } from './auth-service.service';
@@ -13,7 +13,7 @@ export class UserService {
   users: User[];
   User!: User;
   apiURL: string = 'http://localhost:8090/visa/api/user';
-  roleapiURL: string = 'http://localhost:8090/visa/api/user/roles';
+  apiURLrole: string = 'http://localhost:8090/visa/api/user/roles';
   constructor(private http : HttpClient, private authService: AuthServiceService) {
     this.users = [];
 
@@ -48,19 +48,32 @@ export class UserService {
   return this.http.post<User>(`${this.apiURL}`, user, { headers: httpHeaders });
   }
 
+getUserByname(username: string): Observable<User> {
+  const url = `${this.apiURL}/${username}`;
+  let jwt = this.authService.getToken();
+  jwt = "Bearer " + jwt;
+  let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+  return this.http.get<User>(url, { headers: httpHeaders });
+}
 
-
-
+getLoggedUserData(): Observable<User | null> {
+  const username = this.authService.getCurrentUser();
+  if (username) {
+    return this.getUserByname(username);
+  } else {
+    return of(null);
+  }
+}
 
   getRoles(): Observable<Role[]> {
-    const url = `${this.roleapiURL}`; 
+    const url = `${this.apiURLrole}/all`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
     return this.http.get<Role[]>(url, { headers: httpHeaders });
   }
   deleterole(id: number){
-    const url = `${this.roleapiURL}/${id}`;
+    const url = `${this.apiURLrole}/${id}`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
@@ -70,13 +83,13 @@ export class UserService {
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.post<Role>(`${this.roleapiURL}`, role, { headers: httpHeaders });
+    return this.http.post<Role>(`${this.apiURLrole}`, role, { headers: httpHeaders });
   }
   updateRole(role: Role) : Observable<Role>{
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-   return this.http.put<Role>(this.roleapiURL, role,  { headers: httpHeaders });
+   return this.http.put<Role>(this.apiURLrole, role,  { headers: httpHeaders });
   }
 
  

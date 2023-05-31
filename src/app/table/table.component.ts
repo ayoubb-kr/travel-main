@@ -3,6 +3,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { User } from '../model/User.model';
 import { UserService } from '../service/user.service';
 import { Role } from '../model/Role.model';
+import { VisaService } from '../service/visa.service';
+import { Passport } from '../model/Passport.model';
 
 @Component({
   selector: 'app-table',
@@ -10,7 +12,7 @@ import { Role } from '../model/Role.model';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent {
-
+  passports: Passport[] = [];
     roles: Role[] = [];
     userDialog!: boolean;
     users!: User[];
@@ -18,7 +20,7 @@ export class TableComponent {
     selectedUsers!: User[];
     submitted: boolean = false;
     
-  constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService ) {
+  constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService , private visaService : VisaService ) {
     this.selectedUsers = [];
     
   }
@@ -33,8 +35,14 @@ export class TableComponent {
     data => this.roles = data,
     error => console.error(error)
   );
+ this.listePass();
   }
-
+  listePass(){ 
+  this.visaService.listePass().subscribe(
+    passports => this.passports = passports,
+    error => console.error('There was an error!', error)
+  );
+}
 chargedata(){
   this.userService.ListUsers().subscribe(user => {
     console.log(User);
@@ -44,11 +52,12 @@ chargedata(){
 
 
 openNew() {
-    this.user = new User();
-    this.userDialog = true;
-    
-  }
- 
+  this.user = new User();
+  this.user.roles = []; // initialize roles to an empty array
+  this.user.passport = new Passport() 
+  this.userDialog = true;
+}
+
   deleteSelectedUsers() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete the selected users?',
@@ -73,9 +82,16 @@ openNew() {
   
   editUser(user: User) {
     this.user = { ...user };
+    // If user.passport or user.roles are null or undefined, initialize them to reasonable default values
+    if (!this.user.passport) {
+      this.user.passport = new Passport(); // assign a blank passport
+    }
+    if (!this.user.roles) {
+      this.user.roles = []; // initialize roles to an empty array
+    }
     this.userDialog = true;
   }
- 
+
   deleteUser(user: User) {
     this.confirmationService.confirm({
         message: 'Are you sure you want to delete ' + user.username + '?',
@@ -86,9 +102,9 @@ openNew() {
                 this.userService.deleteUser(user.user_id).subscribe(response => {
                     this.users = this.users.filter(val => val.user_id !== user.user_id);
                     this.user = new User();
-                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Role Deleted', life: 3000});
+                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
                 }, error => {
-                    this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Role', life: 3000});
+                    this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete User', life: 3000});
                 });
             }
         }
@@ -99,35 +115,42 @@ openNew() {
     this.userDialog = false;
   }
 
-    saveUser() {
-      this.submitted = true;
-    
-      if (this.user.username!.trim() && this.user.password!.trim()) {
+  saveUser() {
+    this.submitted = true;
+  
+    if (this.user.username!.trim() && this.user.password!.trim()) {
+      if (this.users.some(existingUser => existingUser.passport?.idPass === this.user.passport?.idPass)) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists', life: 3000 });
+      } else {
         if (this.user.user_id) {
-            this.userService.updateUser(this.user).subscribe(
-              response => {
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 });
-              },
-              error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Role', life: 3000 });
-              }
-            );
-          } else {
-            this.userService.saveUser(this.user).subscribe(
-              response => {
-                this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Added', life: 3000 });
-              },
-              error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Role', life: 3000 });
-              }
-            );
-          }
-        };
-      
-      this.users = [...this.users];
-      this.userDialog = false;
-      this.user = new User();
+          this.userService.updateUser(this.user).subscribe(
+            response => {
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+              this.users = [...this.users]; // Make sure to update the users list after successful operation
+              this.userDialog = false;
+              this.user = new User();
+            },
+            error => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
+            }
+          );
+        } else {
+          this.userService.saveUser(this.user).subscribe(
+            response => {
+              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
+              this.users = [...this.users]; // Make sure to update the users list after successful operation
+              this.userDialog = false;
+              this.user = new User();
+            },
+            error => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
+            }
+          );
+        }
+      }
     }
+  }
+  
 
 
 }

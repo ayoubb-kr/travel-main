@@ -20,10 +20,11 @@ export class VisaService {
     this.visas = [];
   }
   ListVisa(): Observable<Visa[]> {
+    const url = `${this.apiURL}/all`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.get<Visa[]>(this.apiURL, { headers: httpHeaders });
+    return this.http.get<Visa[]>(url, { headers: httpHeaders });
   }
   saveVisa(visa: Visa):Observable<Visa> {
     let jwt = this.authService.getToken();
@@ -53,10 +54,11 @@ export class VisaService {
 
     
   listePass():Observable<Passport[]>{
+    const url = `${this.apiURLPas}/all`;
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
     let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.get<Passport[]>(this.apiURLPas, { headers: httpHeaders });
+    return this.http.get<Passport[]>(url, { headers: httpHeaders });
     }
 
     savePass(p: Passport):Observable<Passport> {
@@ -80,8 +82,14 @@ export class VisaService {
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
      return this.http.put<Passport>(this.apiURLPas, p, { headers: httpHeaders });
     }
-    
 
+  getPassportByUserId(id: number) {
+  const url = `${this.apiURLPas}/${id}`;
+  let jwt = this.authService.getToken();
+  jwt = "Bearer " + jwt;
+  let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+  return this.http.get<Passport>(url, { headers: httpHeaders });
+}
 /*
   
  

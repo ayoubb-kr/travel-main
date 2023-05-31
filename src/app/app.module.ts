@@ -44,6 +44,11 @@ import { ListVisaComponent } from './list-visa/list-visa.component';
 import { ListPassportComponent } from './list-passport/list-passport.component';
 import { ListRolesComponent } from './list-roles/list-roles.component';
 import { ErrorModule } from './error/error.module';
+import { MyDetailsComponent } from './my-details/my-details.component';
+import { MyPassportComponent } from './my-passport/my-passport.component';
+import { DemandeVisaComponent } from './demande-visa/demande-visa.component';
+import { DemandeMissionComponent } from './demande-mission/demande-mission.component';
+import { DashbordComponent } from './dashbord/dashbord.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,11 @@ import { ErrorModule } from './error/error.module';
     ListVisaComponent,
     ListPassportComponent,
     ListRolesComponent,
+    MyDetailsComponent,
+    MyPassportComponent,
+    DemandeVisaComponent,
+    DemandeMissionComponent,
+    DashbordComponent,
   ],
   imports: [
     BrowserModule,
