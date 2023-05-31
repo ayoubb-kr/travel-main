@@ -126,7 +126,7 @@ openNew() {
           this.userService.updateUser(this.user).subscribe(
             response => {
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-              this.users = [...this.users]; // Make sure to update the users list after successful operation
+              this.users = [...this.users]; 
               this.userDialog = false;
               this.user = new User();
             },
@@ -138,7 +138,7 @@ openNew() {
           this.userService.saveUser(this.user).subscribe(
             response => {
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
-              this.users = [...this.users]; // Make sure to update the users list after successful operation
+              this.users = [...this.users]; 
               this.userDialog = false;
               this.user = new User();
             },
