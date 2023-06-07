@@ -34,8 +34,18 @@ export class LoginComponent implements OnInit{
           console.log("this is datta token",data)
           let jwToken = data.headers.get('Authorization')!;
           this.authService.saveToken(jwToken);
-           this.router.navigate(['/app/']); 
-
+           
+          const userRoles = this.authService.getUserRoles();
+    
+          // If user has ADMIN, TRAVEL_MANAGER, AGENT_RH, or TEAM_LEADER roles, navigate to Dashbord.
+          if (userRoles.some((role: string) => ['ADMIN','TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'].includes(role))) {
+            this.router.navigate(['/app/Dashbord']); 
+          } 
+          // If user has USER role, navigate to my-details.
+          else if (userRoles.includes('USER')) {
+            this.router.navigate(['/app/my-details']); 
+          }
+    
         },
         error: (err: any) => {
         this.err = 1;
@@ -45,7 +55,7 @@ export class LoginComponent implements OnInit{
             detail: 'Incorrect username or password'
           });
        }
-        });
+      });
     }
 }
 

@@ -116,7 +116,7 @@ saveRole() {
     );
   }
 };
-
+this.chargerole();
 this.roles = [...this.roles];
 this.roleDialog = false;
 this.role = new Role();

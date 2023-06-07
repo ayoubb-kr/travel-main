@@ -5,24 +5,37 @@ import { User } from '../model/User.model';
 import { UserService } from '../service/user.service';
 import { Role } from '../model/Role.model';
 import { AuthServiceService } from '../service/auth-service.service';
+import { Passport } from '../model/Passport.model';
+import { VisaService } from '../service/visa.service';
 @Component({
   selector: 'app-my-details',
   templateUrl: './my-details.component.html',
   styleUrls: ['./my-details.component.scss']
 })
 export class MyDetailsComponent {
-  users!:User[];
+  passports: Passport[] = [];
+  roles: Role[] = [];
+  userDialog!: boolean;
+  users!: User[];
   user!: User;
-constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService,private authService: AuthServiceService ) {}
+  selectedUsers!: User[];
+  submitted: boolean = false;
+  
+  constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private userService : UserService , private visaService : VisaService , private authService:AuthServiceService ) {
+  this.selectedUsers = [];
+  
+  }
 
 
-// show the role only 
+
 displayRoles(roles: Role[]): string {
   return roles.map(role => role.role).join(', ');
 }
 
 ngOnInit() {
   this.getUserDetails();
+  
+
 }
 onRowEditInit(user: User) {
   this.user = { ...user };
@@ -40,21 +53,76 @@ getUserDetails(): void {
   }
 }
 
-onRowEditCancel(user: User) {
- 
+openNew() {
+this.user = new User();
+this.user.roles = []; // initialize roles to an empty array
+this.user.passport = new Passport() 
+this.userDialog = true;
 }
 
-onRowEditSave(user: User) {
-  if (this.user.user_id) {
-    this.userService.updateUser(this.user).subscribe(
-      response => {
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Updated', life: 3000 });
-      },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Role', life: 3000 });
+editUser(user: User) {
+this.user = { ...user };
+// If user.passport or user.roles are null or undefined, initialize them to reasonable default values
+if (!this.user.passport) {
+  this.user.passport = new Passport(); // assign a blank passport
+}
+if (!this.user.roles) {
+  this.user.roles = []; // initialize roles to an empty array
+}
+this.userDialog = true;
+}
+saveUser() {
+  this.submitted = true;
+
+  if (this.user.username!.trim() && this.user.password!.trim()) {
+      // Only check for unique passport id if idPass is defined.
+      if (this.user.passport?.idPass && this.users.some(existingUser => existingUser.user_id !== this.user.user_id && existingUser.passport?.idPass === this.user.passport?.idPass)) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists in another user', life: 3000 });
       }
-      );
+      else {
+          let userToSend = JSON.parse(JSON.stringify(this.user));
+          if (!userToSend.passport?.idPass) {
+              delete userToSend.passport;
+          }
+
+          if (this.user.user_id) {
+              this.userService.updateUser(userToSend).subscribe(
+                  response => {
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+                      this.getUserDetails();
+                      this.users = [...this.users]; 
+                      this.userDialog = false;
+                      this.user = new User();
+                  },
+                  error => {
+                      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
+                  }
+              );
+          } else {
+              this.userService.saveUser(userToSend).subscribe(
+                  response => {
+                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
+                      this.getUserDetails();
+                      this.users = [...this.users]; 
+                      this.userDialog = false;
+                      this.user = new User();
+                  },
+                  error => {
+                      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
+                  }
+              );
+          }
+      }
+  }
 }
+
+hideDialog() {
+this.userDialog = false;
 }
+
+
+
+
+
 }
 

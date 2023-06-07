@@ -84,20 +84,20 @@
         <div class="p-formgrid p-grid">
             <div class="p-field p-col">
                 <label for="password">Password</label>
-                <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" required autofocus>
+                <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" >
                 <small class="p-invalid" *ngIf="submitted && !user.password">Password is required.</small>
             </div>
         </div>
-   <div class="p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="passportId">Passport ID</label>
-            <p-dropdown [options]="passports" [(ngModel)]="user.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Role"></p-dropdown>
-
-            <small class="p-invalid" *ngIf="submitted && !user.passport.idPass">Passport ID is required.</small>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="passportId">Passport ID</label>
+                <p-dropdown [options]="passports" [(ngModel)]="user.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Passport"></p-dropdown>
+    
+                
+            </div>
         </div>
-    </div>
-
     </ng-template>
+
  
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>

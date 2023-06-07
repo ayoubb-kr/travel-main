@@ -13,7 +13,7 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
       const isTokenExpired = this.authService.isTokenExpired();
       if (!isTokenExpired) {
-        this.router.navigate(['/']); 
+        this.router.navigate(['/app']); 
       }
       return isTokenExpired;
   }

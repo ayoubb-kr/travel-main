@@ -5,7 +5,6 @@
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedPass()" [disabled]="!selectedPassports || !selectedPassports.length"></button>
         </ng-template>
  
         
@@ -43,7 +42,7 @@
               <td>{{passport.passExpDate}}</td>
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editPass(passport)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deletePass(passport)"></button>
+               
               </td>
             </tr>
           </ng-template>

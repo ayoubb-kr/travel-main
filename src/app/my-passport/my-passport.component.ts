@@ -50,27 +50,7 @@ openNew() {
 
 }
 
-deleteSelectedPass() {
-  this.confirmationService.confirm({
-    message: 'Are you sure you want to delete the selected Passports?',
-    header: 'Confirm',
-    icon: 'pi pi-exclamation-triangle',
-    accept: () => {
-      // Iterating over all selected passport
-      this.selectedPassports.forEach(passport => {
-        this.visaService.deletePass(passport.idPass).subscribe(response => {
-          // On successful deletion from the backend, remove the passport from the local passport array
-          this.passports = this.passports.filter(val => val.idPass !== passport.idPass);
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Deleted', life: 3000 });
-        }, error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete Passport', life: 3000 });
-        });
-      });
-      // Clear the selected passports
-      this.selectedPassports = [];
-    }
-  });
-}
+
 
 editPass(passport: Passport) {
   this.passport = { ...passport };
@@ -83,23 +63,7 @@ hideDialog() {
   this.updateDialog = false;
 }
 
-deletePass(passport: Passport) {
-  this.confirmationService.confirm({
-      message: 'Are you sure you want to delete ' + passport.idPass + '?',
-      header: 'Confirm',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-       
-        this.visaService.deletePass(passport.idPass).subscribe(response => {
-          this.passports = this.passports.filter(val => val.idPass !== passport.idPass);
-          this.passport = new Passport();
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Passport Deleted', life: 3000});
-        }, error => {
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Passport', life: 3000});
-        });
-    }
-  });
-}
+
 
 
 

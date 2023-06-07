@@ -81,16 +81,65 @@ openNew() {
   }
   
   editUser(user: User) {
-    this.user = { ...user };
-    // If user.passport or user.roles are null or undefined, initialize them to reasonable default values
+    
+    this.user = { ...user, password: '' };
+
     if (!this.user.passport) {
       this.user.passport = new Passport(); // assign a blank passport
     }
-    if (!this.user.roles) {
-      this.user.roles = []; // initialize roles to an empty array
-    }
     this.userDialog = true;
   }
+  saveUser() {
+    this.submitted = true;
+
+    if (this.user.username!.trim()) {
+        // Only check for unique passport id if idPass is defined.
+        if (this.user.passport?.idPass && this.users.some(existingUser => existingUser.user_id !== this.user.user_id && existingUser.passport?.idPass === this.user.passport?.idPass)) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists in another user', life: 3000 });
+        }
+        else {
+          let userToSend = JSON.parse(JSON.stringify(this.user));
+          if (!userToSend.passport?.idPass) {
+                delete userToSend.passport;
+            }
+           if (!userToSend.password || userToSend.password === '') {
+                delete userToSend.password;
+                }
+
+            if (this.user.user_id) {
+                this.userService.updateUser(userToSend).subscribe(
+                    response => {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
+                        this.chargedata();
+                        this.users = [...this.users]; 
+                        this.userDialog = false;
+                        this.user = new User();
+                    },
+                    error => {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
+                    }
+                );
+            } else {
+                this.userService.saveUser(userToSend).subscribe(
+                    response => {
+                        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
+                        this.chargedata();
+                        this.users = [...this.users]; 
+                        this.userDialog = false;
+                        this.user = new User();
+                    },
+                    error => {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
+                    }
+                );
+            }
+        }
+    }
+}
+  
+
+
+  
 
   deleteUser(user: User) {
     this.confirmationService.confirm({
@@ -103,6 +152,7 @@ openNew() {
                     this.users = this.users.filter(val => val.user_id !== user.user_id);
                     this.user = new User();
                     this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
+                    
                 }, error => {
                     this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete User', life: 3000});
                 });
@@ -115,41 +165,6 @@ openNew() {
     this.userDialog = false;
   }
 
-  saveUser() {
-    this.submitted = true;
-  
-    if (this.user.username!.trim() && this.user.password!.trim()) {
-      if (this.users.some(existingUser => existingUser.passport?.idPass === this.user.passport?.idPass)) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists', life: 3000 });
-      } else {
-        if (this.user.user_id) {
-          this.userService.updateUser(this.user).subscribe(
-            response => {
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Updated', life: 3000 });
-              this.users = [...this.users]; 
-              this.userDialog = false;
-              this.user = new User();
-            },
-            error => {
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
-            }
-          );
-        } else {
-          this.userService.saveUser(this.user).subscribe(
-            response => {
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
-              this.users = [...this.users]; 
-              this.userDialog = false;
-              this.user = new User();
-            },
-            error => {
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
-            }
-          );
-        }
-      }
-    }
-  }
   
 
 

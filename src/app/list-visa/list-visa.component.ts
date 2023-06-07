@@ -79,11 +79,14 @@ hideDialog() {
 }
 
 saveVisa() {
-
+  if (this.visas.some(existingUser => existingUser.passport?.idPass === this.visa.passport?.idPass)) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists in onther user', life: 3000 });
+  } else {
   this.visaService.saveVisa(this.visa).subscribe(
         response => {
           console.log('Visa saved successfully!');
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Visa Added', life: 3000 });
+          this.chargevisa();
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Visa', life: 3000 });
@@ -95,7 +98,7 @@ saveVisa() {
       this.visas = [...this.visas];
       this.visa.passport = {idPass: ''};
     }
-  
+  }
     updatePass() {
   
       this.visaService.updateVisa(this.visa).subscribe(
@@ -103,7 +106,7 @@ saveVisa() {
           
           const index = this.visas.findIndex(v => v.idVisa === this.visa.idVisa);
           this.visas[index] = this.visa;
-          
+          this.chargevisa();
           this.visas = [...this.visas];
     
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Updated', life: 3000 });

@@ -46,8 +46,13 @@ export class VisaService {
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
       return this.http.delete(url, { headers: httpHeaders });
     }
-
-
+    getVisaByIdpass(id: string) {
+      const url = `${this.apiURL}/${id}`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+      return this.http.get<Visa>(url, { headers: httpHeaders });
+    }
 
 
 

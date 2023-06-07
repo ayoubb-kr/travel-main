@@ -49,7 +49,15 @@ export class UserService {
   }
 
 getUserByname(username: string): Observable<User> {
-  const url = `${this.apiURL}/${username}`;
+  const url = `${this.apiURL}/name/${username}`;
+  let jwt = this.authService.getToken();
+  jwt = "Bearer " + jwt;
+  let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+  return this.http.get<User>(url, { headers: httpHeaders });
+}
+
+getUserById(user_id: number): Observable<User> {
+  const url = `${this.apiURL}/${user_id}`;
   let jwt = this.authService.getToken();
   jwt = "Bearer " + jwt;
   let httpHeaders = new HttpHeaders({ "Authorization": jwt })
@@ -64,6 +72,9 @@ getLoggedUserData(): Observable<User | null> {
     return of(null);
   }
 }
+
+
+
 
   getRoles(): Observable<Role[]> {
     const url = `${this.apiURLrole}/all`;
@@ -92,15 +103,5 @@ getLoggedUserData(): Observable<User | null> {
    return this.http.put<Role>(this.apiURLrole, role,  { headers: httpHeaders });
   }
 
- 
-/*
-  consulterPays(id: number): Observable<Pays> {
-    const url = `${this.apiURL}/${id}`;
-    let jwt = this.authService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.get<Pays>(url, { headers: httpHeaders });
-  }
- 
-*/
+
 }

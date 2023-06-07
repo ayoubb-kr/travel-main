@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
       const isTokenExpired = this.authService.isTokenExpired();
       if (isTokenExpired) {
-        this.router.navigate(['/login']); 
+        this.router.navigate(['/']); 
       }
       return !isTokenExpired;
   }

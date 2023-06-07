@@ -108,7 +108,7 @@ savePass() {
           }
       );
   };
-
+  this.chargepass();
   this.passDialog = false;
   this.passport = new Passport();
   this.passports = [...this.passports];

@@ -34,7 +34,7 @@ export class AppMenuComponent implements OnInit {
             {
                 label: '',
                 items: [
-                    { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/app/Dashbord'], roles: ['ADMIN', 'USER'] }
+                    { label: 'Home', icon: 'pi pi-fw pi-home', routerLink: ['/app/Dashbord'], roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }
                 ]
             },
             {
@@ -42,13 +42,17 @@ export class AppMenuComponent implements OnInit {
                 items: [
                
                     { label: 'Table Users', icon: 'pi pi-fw pi-table', routerLink: ['/app/table'], roles: ['ADMIN'] },
-                    { label: 'List Visa', icon: 'pi pi-fw pi-list', routerLink: ['/app/list-visa'], roles: ['ADMIN', 'USER'] },
-                    { label: 'list passport', icon: 'pi pi-fw pi-database', routerLink: ['/app/list-passport'] ,roles: ['ADMIN','USER'] },
+                    { label: 'List Visas', icon: 'pi pi-fw pi-list', routerLink: ['/app/list-visa'], roles: ['ADMIN'] },
+                    { label: 'list passports', icon: 'pi pi-fw pi-database', routerLink: ['/app/list-passport'] ,roles: ['ADMIN'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/app/list-roles'] , roles: ['ADMIN'] },
-                    { label: 'My Details', icon: 'pi pi-fw pi-user', routerLink: ['/app/my-details'] , roles: ['USER'] },
-                    { label: 'My Passport',  icon:'pi pi-fw pi-id-card', routerLink: ['/app/my-passport'] , roles: ['USER'] },
-                    { label: 'Request',  icon:'pi pi-fw pi-file-import', routerLink: ['/app/request'] , roles: ['ADMIN','USER'] },
-                    { label: 'mission',  icon:'pi pi-fw pi-briefcase', routerLink: ['/app/mission'] , roles: ['ADMIN','USER'] },
+
+                    { label: 'My Details', icon: 'pi pi-fw pi-user', routerLink: ['/app/my-details'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
+                    { label: 'My Passports',  icon:'pi pi-fw pi-id-card', routerLink: ['/app/my-passport'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
+                    { label: 'My Visas',  icon:'pi pi-fw pi-file', routerLink: ['/app/my-visa'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
+                    
+                    { label: 'Visa Request',  icon:'pi pi-fw pi-file-import', routerLink: ['/app/request'] , roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] },
+                    { label: 'mission',  icon:'pi pi-fw pi-briefcase', routerLink: ['/app/mission'] , roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] },
+
                     
                 ]
             },
@@ -61,7 +65,7 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Logout',
                                 icon: 'pi pi-fw pi-sign-out',
                                 command: () => this.logout(),
-                                roles: ['ADMIN', 'USER', 'TRAVEL_MANAGER']
+                                roles: ['ADMIN', 'USER', 'TRAVEL_MANAGER','	AGENT_RH','TEAM_LEADER']
                             },
                 ]
             },

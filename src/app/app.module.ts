@@ -49,6 +49,8 @@ import { MyPassportComponent } from './my-passport/my-passport.component';
 import { DemandeVisaComponent } from './demande-visa/demande-visa.component';
 import { DemandeMissionComponent } from './demande-mission/demande-mission.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
+import { MyVisaComponent } from './my-visa/my-visa.component';
+import { EmptyComponent } from './empty.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { DashbordComponent } from './dashbord/dashbord.component';
     DemandeVisaComponent,
     DemandeMissionComponent,
     DashbordComponent,
+    MyVisaComponent,
+    EmptyComponent
   ],
   imports: [
     BrowserModule,

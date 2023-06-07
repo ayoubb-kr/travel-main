@@ -43,7 +43,7 @@
               <p-tableCheckbox [value]="visa"></p-tableCheckbox>
               </td>
               <td>{{visa.idVisa}}</td>
-              <td>{{visa.VisaExpDate}}</td>
+              <td>{{visa.visaExpDate}}</td>
               <td>{{visa.jours}}</td>
               <td>{{visa.mois}}</td>
              <td>{{ visa.passport.idPass}}</td>
@@ -91,13 +91,14 @@
             </div>
         </div>
 
-    <div class="p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="idPass">Passport ID</label>
-            <textarea id="idPass" pInputTextarea  [(ngModel)]="visa.passport.idPass" required></textarea>
-            <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">Passport ID is required.</small>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="passportId">Passport ID</label>
+                <p-dropdown [options]="passports" [(ngModel)]="visa.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Passport"></p-dropdown>
+    
+                
+            </div>
         </div>
-    </div>
     </ng-template>
  
     <ng-template pTemplate="footer">
@@ -131,13 +132,14 @@
             </div>
         </div>
 
-    <div class="p-formgrid p-grid">
-        <div class="p-field p-col">
-            <label for="idPass">Passport ID</label>
-            <textarea id="idPass" pInputTextarea  [(ngModel)]="visa.passport.idPass" required></textarea>
-            <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">Passport ID is required.</small>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="passportId">Passport ID</label>
+                <p-dropdown [options]="passports" [(ngModel)]="visa.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Passport"></p-dropdown>
+    
+                <small class="p-invalid" *ngIf="submitted && !visa.passport.idPass">Passport ID is required.</small>
+            </div>
         </div>
-    </div>
     </ng-template>
  
     <ng-template pTemplate="footer">

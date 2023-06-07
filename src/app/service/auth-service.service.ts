@@ -12,6 +12,8 @@ export class AuthServiceService {
 
 
                    public loggedUser!:string;
+                 
+                   public loggedUserId! : number;
                    public isloggedIn: Boolean = false;
                    public roles!:string[];
                    private helper = new JwtHelperService();
@@ -51,7 +53,9 @@ export class AuthServiceService {
   getToken(): string{
     return this.token;
   }
-
+  setLoggedUser(username: string) {
+    this.loggedUser = username;
+  }
 /*
   SignIn(user: User): Boolean {
     let validUser: Boolean = false;
@@ -68,12 +72,6 @@ export class AuthServiceService {
     return validUser;
   }
   */
-
-  isAdmin():Boolean{
-    if (!this.roles)
-    return false;
-   return this.roles.indexOf('ADMIN') >=0;
-   }
 
    logout() {
     this.loggedUser = undefined!;
@@ -103,10 +101,18 @@ getUserRoles(): string[] {
 getCurrentUser(): string {
   const token = this.getToken();
   if (!token) {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
   const decodedToken = this.helper.decodeToken(token);
   return decodedToken.sub;
 }
-
+getCurrentUserId(): number | null {
+  const token = this.getToken();
+  if (!token) {
+    this.router.navigate(['/']);
+    return null;
+  }
+  const decodedToken = this.helper.decodeToken(token);
+  return decodedToken.user_id; 
+}
 }

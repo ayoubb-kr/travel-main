@@ -16,25 +16,29 @@ import { MyPassportComponent } from './my-passport/my-passport.component';
 import { DemandeVisaComponent } from './demande-visa/demande-visa.component';
 import { DemandeMissionComponent } from './demande-mission/demande-mission.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
+import { MyVisaComponent } from './my-visa/my-visa.component';
 const routes: Routes = [
-  { path: '', component: LoginComponent , },
+  { path: '', component: LoginComponent , canActivate: [LoginGuard]},
   { path: 'app', component: AppLayoutComponent,  canActivate: [AuthGuard],children: [
-      { path: 'table', component: TableComponent ,canActivate: [RoleGuardService],
-      data: { roles: ['ADMIN'] }},
+
+      { path: 'Dashbord', component: DashbordComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
+      { path: 'table', component: TableComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
+      { path: 'list-visa', component: ListVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
+      { path: 'list-passport', component: ListPassportComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
+      { path: 'list-roles', component: ListRolesComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] } },
+
+      { path: 'request', component: DemandeVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] }},
+      { path: 'mission', component: DemandeMissionComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] }},
       
-      { path: 'list-visa', component: ListVisaComponent },
-      { path: 'list-passport', component: ListPassportComponent },
-      { path: 'list-roles', component: ListRolesComponent },
-      { path: 'my-details', component: MyDetailsComponent },
-      { path: 'my-passport', component: MyPassportComponent },
-      { path: 'request', component: DemandeVisaComponent },
-      { path: 'mission', component: DemandeMissionComponent },
-      { path: 'Dashbord', component: DashbordComponent },
+    
+      { path: 'my-visa', component: MyVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] } },
+      { path: 'my-details', component: MyDetailsComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
+      { path: 'my-passport', component: MyPassportComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
     ]
   },
   { path: 'acces', component: AccessComponent },
   { path: 'error', component: ErrorComponent },
-  { path: 'login', redirectTo: '', pathMatch: 'full' },
+  { path: '', redirectTo: '', pathMatch: 'full' },
   { path: '**', redirectTo: 'error' }, 
 ];
 
