@@ -18,7 +18,7 @@ export class DemandeVisaComponent {
   selectedVisaRequests!: VisaRequest[];
   submitted: boolean = false;
   statuses = Object.values(Status);
- 
+  updatevisaRequestDialog!: boolean;
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private visaRequestService: VisaRequestService ,  private visaService : VisaService) {
     this.selectedVisaRequests = [];
   }
@@ -42,21 +42,22 @@ loadData() {
 }
 openNew() {
   this.visaRequest = new VisaRequest();
-  this.visaRequest.passport = new Passport() 
+  this.visaRequest.passport = new Passport();
+  this.visaRequest.status = Status.WAITING;
   this.visaRequestDialog = true;
 }
 
 
-
 editVisaRequest(visaRequest: VisaRequest) {
   this.visaRequest = { ...visaRequest };
-  this.visaRequestDialog = true;
+  this.updatevisaRequestDialog = true;
 }
 
 
 
 hideDialog() {
   this.visaRequestDialog = false;
+  this.updatevisaRequestDialog = false;
 }
 
 saveVisaRequest() {
@@ -69,6 +70,7 @@ saveVisaRequest() {
           this.loadData();
           this.visaRequestDialog = false;
           this.messageService.add({severity:'success', summary:'Successful', detail:'Visa Request Updated', life: 3000});
+          this.updatevisaRequestDialog = false;
         });
     } else {
       this.visaRequestService.addVisaRequest(this.visaRequest)

@@ -1,6 +1,7 @@
 import { Passport } from "./Passport.model";
 
 export enum Status {
+     WAITING ='WAITING',
     IN_PROGRESS = 'IN_PROGRESS',
     SUCCESSFUL = 'SUCCESSFUL',
     REJECTED = 'REJECTED'

@@ -41,7 +41,14 @@
               <td>{{visaRequest.id}}</td>
               <td>{{visaRequest.type}}</td>
               <td>{{visaRequest.destination}}</td>
-              <td>{{visaRequest.status}}</td>
+              <td [ngClass]="{
+                'status-waiting': visaRequest.status === 'WAITING',
+                'status-in-progress': visaRequest.status === 'IN_PROGRESS',
+                'status-successful': visaRequest.status === 'SUCCESSFUL',
+                'status-rejected': visaRequest.status === 'REJECTED'
+              }">
+                {{visaRequest.status}}
+              </td>
               <td>{{visaRequest.passport.idPass}}</td>
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editVisaRequest(visaRequest)"></button>
@@ -58,6 +65,32 @@
 </div>
  
 <p-dialog [(visible)]="visaRequestDialog" [style]="{width: '450px',height: '600px'}" header="Visa Request Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="type">Type</label>
+            <input type="text" pInputText id="type" [(ngModel)]="visaRequest.type" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !visaRequest.type">Type is required.</small>
+        </div>
+
+        <div class="p-field">
+            <label for="destination">Destination</label>
+            <input type="text" pInputText id="destination" [(ngModel)]="visaRequest.destination" required />
+            <small class="p-invalid" *ngIf="submitted && !visaRequest.destination">Destination is required.</small>
+        </div>
+
+        <div class="p-field">
+            <label for="passportId">Passport ID</label>
+            <p-dropdown [options]="passports" [(ngModel)]="visaRequest.passport" optionLabel="idPass" placeholder="Select a Passport"></p-dropdown>
+            <small class="p-invalid" *ngIf="submitted && !visaRequest.passport">Passport is required.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveVisaRequest()"></button>
+    </ng-template>
+</p-dialog>
+<p-dialog [(visible)]="updatevisaRequestDialog" [style]="{width: '450px',height: '600px'}" header="Visa Request Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div class="p-field">
             <label for="type">Type</label>

@@ -51,7 +51,7 @@ export class AppMenuComponent implements OnInit {
                     { label: 'My Visas',  icon:'pi pi-fw pi-file', routerLink: ['/app/my-visa'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
                     
                     { label: 'Visa Request',  icon:'pi pi-fw pi-file-import', routerLink: ['/app/request'] , roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] },
-                    { label: 'mission',  icon:'pi pi-fw pi-briefcase', routerLink: ['/app/mission'] , roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] },
+                    
 
                     
                 ]

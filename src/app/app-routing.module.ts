@@ -14,7 +14,6 @@ import { ErrorComponent } from './error/error.component';
 import { MyDetailsComponent } from './my-details/my-details.component';
 import { MyPassportComponent } from './my-passport/my-passport.component';
 import { DemandeVisaComponent } from './demande-visa/demande-visa.component';
-import { DemandeMissionComponent } from './demande-mission/demande-mission.component';
 import { DashbordComponent } from './dashbord/dashbord.component';
 import { MyVisaComponent } from './my-visa/my-visa.component';
 const routes: Routes = [
@@ -28,8 +27,7 @@ const routes: Routes = [
       { path: 'list-roles', component: ListRolesComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] } },
 
       { path: 'request', component: DemandeVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] }},
-      { path: 'mission', component: DemandeMissionComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] }},
-      
+   
     
       { path: 'my-visa', component: MyVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] } },
       { path: 'my-details', component: MyDetailsComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
