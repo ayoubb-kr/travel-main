@@ -22,7 +22,6 @@ import {SliderModule} from 'primeng/slider';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import {DialogModule} from 'primeng/dialog';
-import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
@@ -51,6 +50,14 @@ import { DashbordComponent } from './dashbord/dashbord.component';
 import { MyVisaComponent } from './my-visa/my-visa.component';
 import { StepsModule } from 'primeng/steps';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RequestMissionComponent } from './request-mission/request-mission.component';
+import { RequestMissionModule } from './request-mission/request-mission.module';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { Step1Component } from './step1/step1.component';
+import { Step2Component } from './step2/step2.component';
+import { Step3Component } from './step3/step3.component';
+
 
 @NgModule({
   declarations: [
@@ -64,8 +71,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     DemandeVisaComponent,
     DashbordComponent,
     MyVisaComponent,
- 
- 
+    RequestMissionComponent,
+    RequestMissionComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component,
   ],
   imports: [
     BrowserModule,
@@ -98,7 +108,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     AccessModule,
     ErrorModule,
     StepsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RequestMissionModule,
+    CardModule,
+   
   ],
   providers: [MasterService, MessageService, ConfirmationService,UserService,VisaService],
   bootstrap: [AppComponent]

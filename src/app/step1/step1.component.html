@@ -1,0 +1,44 @@
+<div class="stepsdemo-content">
+    <p-card>
+        <ng-template pTemplate="title"> Personal Information </ng-template>
+        <ng-template pTemplate="subtitle"> Enter your personal information </ng-template>
+        <ng-template pTemplate="content">
+            <div class="p-fluid">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input
+                        #username="ngModel"
+                        id="username"
+                        type="text"
+                        required
+                        pInputText
+                        [(ngModel)]="missionRequest.username.username"
+                        [ngClass]="{ 'ng-dirty': (username.invalid && submitted) || (username.dirty && username.invalid) }"
+                    />
+                    <small *ngIf="(username.invalid && submitted) || (username.dirty && username.invalid)" class="p-error">Username is required.</small>
+                </div>
+                <div class="field">
+                    <label for="passportId">Passport ID</label>
+                    <input
+                        #passportId="ngModel"
+                        id="passportId"
+                        type="text"
+                        required
+                        pInputText
+                        [(ngModel)]="missionRequest.passportId.idPass"
+                        [ngClass]="{ 'ng-dirty': (passportId.invalid && submitted) || (passportId.dirty && passportId.invalid) }"
+                    />
+                    <small *ngIf="(passportId.invalid && submitted) || (passportId.dirty && passportId.invalid)" class="p-error">Passport ID is required.</small>
+                </div>
+            </div>
+        </ng-template>
+
+
+        
+        <ng-template pTemplate="footer">
+            <div class="grid grid-nogutter justify-content-end">
+                <p-button label="Next" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+            </div>
+        </ng-template>
+    </p-card>
+</div>

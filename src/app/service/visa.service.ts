@@ -66,6 +66,14 @@ export class VisaService {
     return this.http.get<Passport[]>(url, { headers: httpHeaders });
     }
 
+    getPassportById(id: string) {
+      const url = `${this.apiURLPas}/id/${id}`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+      return this.http.get<Passport>(url, { headers: httpHeaders });
+    }
+
     savePass(p: Passport):Observable<Passport> {
     let jwt = this.authService.getToken();
     jwt = "Bearer " + jwt;
@@ -95,6 +103,8 @@ export class VisaService {
   let httpHeaders = new HttpHeaders({ "Authorization": jwt })
   return this.http.get<Passport>(url, { headers: httpHeaders });
 }
+
+
 /*
   
  
