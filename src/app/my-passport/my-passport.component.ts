@@ -16,12 +16,10 @@ export class MyPassportComponent {
   passport!: Passport;
   passDialog!: boolean;
   updateDialog!: boolean;
-  selectedPassports!: Passport[];
   submitted: boolean = false;
   user!: User;
 constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ,  private userService : UserService, private router: Router ) {
-  this.selectedPassports = [];
-  
+ 
 }
 ngOnInit() {
   this.userService.getLoggedUserData().subscribe(user => {

@@ -54,7 +54,14 @@ export class VisaService {
       return this.http.get<Visa>(url, { headers: httpHeaders });
     }
 
-
+    getVisaById(id: string): Observable<Visa> {
+      const url = `${this.apiURL}/id/${id}`;
+      let jwt = this.authService.getToken();
+      jwt = "Bearer " + jwt;
+      let httpHeaders = new HttpHeaders({ "Authorization": jwt });
+      return this.http.get<Visa>(url, { headers: httpHeaders });
+    }
+    
 
 
     
@@ -105,28 +112,5 @@ export class VisaService {
 }
 
 
-/*
-  
- 
-  consulterPays(id: number): Observable<Pays> {
-    const url = `${this.apiURL}/${id}`;
-    let jwt = this.authService.getToken();
-    jwt = "Bearer " + jwt;
-    let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-    return this.http.get<Pays>(url, { headers: httpHeaders });
-  }
- 
-  rechercherParContinent(idCat: number): Observable<Pays[]> {
-    const url = `${this.apiURL}/paycont/${idCat}`;
-    return this.http.get<Pays[]>(url);
-  }
-  rechercherParNom(nom: string):Observable< Pays[]> {
-    const url = `${this.apiURL}/paysByName/${nom}`;
-    return this.http.get<Pays[]>(url);
-    }
-    AddContinent( cat: Continent):Observable<Continent>{
-      return this.http.post<Continent>(this.apiURLCat, cat, httpOptions);
-      }
-      
-      */
+
 }

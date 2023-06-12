@@ -24,8 +24,8 @@ ngOnInit() {
 }
 chargepass(){
 this.visaService.listePass().subscribe(passport => {
-  console.log(this.passport);
   this.passports= passport;
+
     });
 }
 

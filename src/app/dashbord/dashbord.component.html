@@ -62,7 +62,7 @@
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Passports</span>
-                    <div class="text-900 font-medium text-xl">152</div>
+                    <div class="text-900 font-medium text-xl">{{passports ? passports.length : 0 }} </div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-id-card text-orange-500 text-xl"></i>
@@ -75,7 +75,7 @@
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Visas</span>
-                    <div class="text-900 font-medium text-xl">100</div>
+                    <div class="text-900 font-medium text-xl">{{visas ? visas.length : 0 }}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-cyan-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-file-edit text-cyan-500 text-xl"></i>
@@ -88,7 +88,7 @@
             <div class="flex justify-content-between mb-3">
                 <div>
                     <span class="block text-500 font-medium mb-3">Messions</span>
-                    <div class="text-900 font-medium text-xl">10</div>
+                    <div class="text-900 font-medium text-xl">{{missions ? missions.length : 0 }}</div>
                 </div>
                 <div class="flex align-items-center justify-content-center bg-purple-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                     <i class="pi pi-briefcase text-purple-500 text-xl"></i>

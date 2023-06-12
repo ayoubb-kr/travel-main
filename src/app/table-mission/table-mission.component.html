@@ -1,0 +1,95 @@
+<p-toast></p-toast>
+
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" [routerLink]="['/app/mission']"></button>&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length"></button>
+        </ng-template>
+
+    </p-toolbar>
+<p-table #dt [value]="requests" [rows]="6" [paginator]="true" [globalFilterFields]="['id','username','passportId', 'visaId', 'dateDep', 'dateRet', 'days', 'missionObject', 'departureCity', 'arrivalCity', 'status', 'budget', 'feadback']"
+    [(selection)]="selectedRequests" [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Manage Mission Requests</h5>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Search" />         
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="id">Request ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+            <th pSortableColumn="passportId">Passport ID <p-sortIcon field="passportId"></p-sortIcon></th>
+            <th pSortableColumn="visaId">Visa ID <p-sortIcon field="visaId"></p-sortIcon></th>
+            <th pSortableColumn="dateDep">Departure Date <p-sortIcon field="dateDep"></p-sortIcon></th>
+            <th pSortableColumn="dateRet">Return Date <p-sortIcon field="dateRet"></p-sortIcon></th>
+            <th pSortableColumn="days">Days <p-sortIcon field="days"></p-sortIcon></th>
+            <th pSortableColumn="missionObject">Mission Object <p-sortIcon field="missionObject"></p-sortIcon></th>
+            <th pSortableColumn="departureCity">Departure City <p-sortIcon field="departureCity"></p-sortIcon></th>
+            <th pSortableColumn="arrivalCity">Arrival City <p-sortIcon field="arrivalCity"></p-sortIcon></th>
+            <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+            <th pSortableColumn="budget">Budget <p-sortIcon field="budget"></p-sortIcon></th>
+            <th pSortableColumn="feadback">Feadback <p-sortIcon field="feadback"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-request>
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="request"></p-tableCheckbox>
+            </td>
+            <td>{{request.id}}</td>
+            <td>{{request.username?.username || 'No User'}}</td>
+            <td>{{request.passportId?.idPass || 'No Passport'}}</td>
+            <td>{{request.visaId?.idVisa || 'No Visa'}}</td>
+            <td>{{request.dateDep}}</td>
+            <td>{{request.dateRet}}</td>
+            <td>{{request.days}}</td>
+            <td>{{request.missionObject}}</td>
+            <td>{{request.departureCity}}</td>
+            <td>{{request.arrivalCity}}</td>
+            <td [ngClass]="{
+                'status-waiting': request.status === 'WAITING',
+                'status-in-progress': request.status === 'IN_PROGRESS',
+                'status-successful': request.status === 'SUCCESSFUL',
+                'status-rejected': request.status === 'REJECTED'
+              }">{{request.status}}</td>
+            <td>{{request.budget}}</td>
+            <td>{{request.feadback}}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editRequest(request)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRequest(request)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            In total there are {{requests ? requests.length : 0 }} requests.
+        </div>
+    </ng-template>
+</p-table>
+</div>
+<p-dialog [(visible)]="requestDialog" [style]="{width: '450px',height: '450px'}" header="Mission Request Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="status">Status</label>
+            <p-dropdown [(ngModel)]="this.request.status" placeholder="Select a Status" [options]="statuses"></p-dropdown>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="updateRequest()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

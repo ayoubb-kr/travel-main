@@ -1,0 +1,94 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+    </p-toolbar>
+
+    <p-table #dt [value]="missionRequests" [rows]="6" [paginator]="true" 
+        [globalFilterFields]="['id', 'username', 'status', 'feadback']"
+        [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+        [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <h5 class="p-m-0">Manage My Mission Requests</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" 
+                           (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
+                           placeholder="Global Search" />         
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">Request ID <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
+                <th pSortableColumn="passportId">Passport ID <p-sortIcon field="passportId"></p-sortIcon></th>
+                <th pSortableColumn="visaId">Visa ID <p-sortIcon field="visaId"></p-sortIcon></th>
+                <th pSortableColumn="dateDep">Departure Date <p-sortIcon field="dateDep"></p-sortIcon></th>
+                <th pSortableColumn="dateRet">Return Date <p-sortIcon field="dateRet"></p-sortIcon></th>
+                <th pSortableColumn="days">Days <p-sortIcon field="days"></p-sortIcon></th>
+                <th pSortableColumn="missionObject">Mission Object <p-sortIcon field="missionObject"></p-sortIcon></th>
+                <th pSortableColumn="departureCity">Departure City <p-sortIcon field="departureCity"></p-sortIcon></th>
+                <th pSortableColumn="arrivalCity">Arrival City <p-sortIcon field="arrivalCity"></p-sortIcon></th>
+                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                <th pSortableColumn="budget">Budget <p-sortIcon field="budget"></p-sortIcon></th>
+                <th pSortableColumn="feadback">Feadback <p-sortIcon field="feadback"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-missionRequest>
+            <tr>
+                <td></td>
+            <td>{{missionRequest.id}}</td>
+            <td>{{missionRequest.username?.username || 'No User'}}</td>
+            <td>{{missionRequest.passportId?.idPass || 'No Passport'}}</td>
+            <td>{{missionRequest.visaId?.idVisa || 'No Visa'}}</td>
+            <td>{{missionRequest.dateDep}}</td>
+            <td>{{missionRequest.dateRet}}</td>
+            <td>{{missionRequest.days}}</td>
+            <td>{{missionRequest.missionObject}}</td>
+            <td>{{missionRequest.departureCity}}</td>
+            <td>{{missionRequest.arrivalCity}}</td>
+            <td [ngClass]="{
+                'status-waiting': missionRequest.status === 'WAITING',
+                'status-in-progress': missionRequest.status === 'IN_PROGRESS',
+                'status-successful': missionRequest.status === 'SUCCESSFUL',
+                'status-rejected': missionRequest.status === 'REJECTED'
+              }">{{missionRequest.status}}</td>
+            <td>{{missionRequest.budget}}</td>
+            <td>{{missionRequest.feadback}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" 
+                            (click)="editMissionRequest(missionRequest)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{missionRequests ? missionRequests.length : 0 }} Mission Requests.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="updateDialog" [style]="{width: '450px', height:'650px'}" header="Mission Request Details" 
+          [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="Feadback">Feadback</label>
+            <input type="text" pInputText id="Feadback" [(ngModel)]="missionRequest.feadback" />
+            <small class="p-invalid" *ngIf="submitted && !missionRequest.feadback">Feadback is required.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" 
+                (click)="hideDialog()"></button>
+        <button pButton pRipple label="Update" icon="pi pi-check" class="p-button-text" 
+                (click)="updateMissionRequest()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

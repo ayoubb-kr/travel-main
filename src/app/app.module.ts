@@ -34,7 +34,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { MasterService } from 'src/app/service/master.service';
 import { LoginModule } from './login/login.module';
 import { UserService } from './service/user.service';
 import { VisaService } from './service/visa.service';
@@ -57,6 +56,9 @@ import { ButtonModule } from 'primeng/button';
 import { Step1Component } from './step1/step1.component';
 import { Step2Component } from './step2/step2.component';
 import { Step3Component } from './step3/step3.component';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { TableMissionComponent } from './table-mission/table-mission.component';
+import { MyMissionsComponent } from './my-missions/my-missions.component';
 
 
 @NgModule({
@@ -76,6 +78,8 @@ import { Step3Component } from './step3/step3.component';
     Step1Component,
     Step2Component,
     Step3Component,
+    TableMissionComponent,
+    MyMissionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,9 +115,9 @@ import { Step3Component } from './step3/step3.component';
     ReactiveFormsModule,
     RequestMissionModule,
     CardModule,
-   
+   CurrencyMaskModule,
   ],
-  providers: [MasterService, MessageService, ConfirmationService,UserService,VisaService],
+  providers: [ MessageService, ConfirmationService,UserService,VisaService],
   bootstrap: [AppComponent]
 
 })

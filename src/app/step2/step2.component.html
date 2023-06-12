@@ -1,1 +1,86 @@
-hi
+<div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title"> Step 2: Visa and Mission Information </ng-template>
+      <ng-template pTemplate="subtitle"> Enter your Visa and Mission details </ng-template>
+      <ng-template pTemplate="content">
+        <div class="p-fluid">
+          <div class="field">
+            <label for="visaId">Visa ID</label>
+            <input
+              #visaId="ngModel"
+              id="visaId"
+              type="text"
+              required
+              pInputText
+              [(ngModel)]="missionRequest.visaId.idVisa"
+              [ngClass]="{ 'ng-dirty': (visaId.invalid && submitted) || (visaId.dirty && visaId.invalid) }"
+            />
+            <small *ngIf="(visaId.invalid && submitted) || (visaId.dirty && visaId.invalid)" class="p-error">Visa ID is required.</small>
+          </div>
+         
+          <div class="field">
+            <label for="rangeDates">Departure Date</label>
+            <p-calendar id="rangeDates" [(ngModel)]="rangeDates" (ngModelChange)="onRangeDatesChanged()" selectionMode="range" [readonlyInput]="true" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
+            
+          </div>
+          <div class="field">
+            <label for="missionObject">Mission Object</label>
+            <input
+              #missionObject="ngModel"
+              id="missionObject"
+              type="text"
+              required
+              pInputText
+              [(ngModel)]="missionRequest.missionObject"
+              [ngClass]="{ 'ng-dirty': (missionObject.invalid && submitted) || (missionObject.dirty && missionObject.invalid) }"
+            />
+            <small *ngIf="(missionObject.invalid && submitted) || (missionObject.dirty && missionObject.invalid)" class="p-error">Mission Object is required.</small>
+          </div>
+  
+          <div class="p-field">
+            <label for="departureCity">Departure City</label>
+            <input
+              #departureCity="ngModel"
+              id="departureCity"
+              type="text"
+              required
+              pInputText
+              [(ngModel)]="missionRequest.departureCity"
+              [ngClass]="{ 'ng-dirty': (departureCity.invalid && submitted) || (departureCity.dirty && departureCity.invalid) }"
+            />
+            <small *ngIf="(departureCity.invalid && submitted) || (departureCity.dirty && departureCity.invalid)" class="p-error">Departure City is required.</small>
+          </div>
+  
+          <div class="field">
+            <label for="arrivalCity">Arrival City</label>
+            <input
+              #arrivalCity="ngModel"
+              id="arrivalCity"
+              type="text"
+              required
+              pInputText
+              [(ngModel)]="missionRequest.arrivalCity"
+              [ngClass]="{ 'ng-dirty': (arrivalCity.invalid && submitted) || (arrivalCity.dirty && arrivalCity.invalid) }"
+            />
+            <small *ngIf="(arrivalCity.invalid && submitted) || (arrivalCity.dirty && arrivalCity.invalid)" class="p-error">Arrival City is required.</small>
+          </div>
+  
+          <div class="field">
+            <label for="budget">Budget</label>
+            <p-inputNumber #budget="ngModel" [(ngModel)]="missionRequest.budget" inputId="currency-tnd" mode="currency" currency="TND" locale="en-US"  [ngClass]="{ 'ng-dirty': (budget.invalid && submitted) || (budget.dirty && budget.invalid) }"></p-inputNumber>
+            <small *ngIf="(budget.invalid && submitted) || (budget.dirty && budget.invalid)" class="p-error">Budget is required.</small>
+        </div>
+        
+        </div>
+
+      </ng-template>
+  
+      <ng-template pTemplate="footer">
+        <div class="grid grid-nogutter justify-content-end">
+         <p-button label="Back" (onClick)="Back()" icon="pi pi-angle-left"></p-button>
+          <p-button label="Next" (onClick)="confirmDetails()" icon="pi pi-angle-right" iconPos="right"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+  

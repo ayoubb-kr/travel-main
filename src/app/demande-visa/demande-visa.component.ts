@@ -66,19 +66,27 @@ saveVisaRequest() {
   if (this.visaRequest.type.trim() && this.visaRequest.destination.trim()) {
     if (this.visaRequest.id) {
       this.visaRequestService.updateVisaRequest(this.visaRequest)
-        .subscribe(() => {
+        .subscribe( response => {
           this.loadData();
           this.visaRequestDialog = false;
           this.messageService.add({severity:'success', summary:'Successful', detail:'Visa Request Updated', life: 3000});
           this.updatevisaRequestDialog = false;
-        });
+        },
+        error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Visa Request', life: 3000 });
+        }
+    );
     } else {
       this.visaRequestService.addVisaRequest(this.visaRequest)
-        .subscribe(() => {
+        .subscribe( response => {
           this.loadData();
           this.visaRequestDialog = false;
           this.messageService.add({severity:'success', summary:'Successful', detail:'Visa Request Created', life: 3000});
-        });
+        },
+        error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Created Visa Request', life: 3000 });
+        }
+    );
     }
   }
 }
@@ -87,16 +95,20 @@ saveVisaRequest() {
     
 deleteVisaRequest(visaRequest: VisaRequest) {
   this.confirmationService.confirm({
-    message: 'Are you sure you want to delete this Visa Request?',
+    message: 'Are you sure you want to delete Visa Request ' + visaRequest.id + ' ?',
     header: 'Confirm',
     icon: 'pi pi-exclamation-triangle',
     accept: () => {
         if (visaRequest.id !== undefined) {
-      this.visaRequestService.deleteVisaRequest(visaRequest.id).subscribe(() => {
+      this.visaRequestService.deleteVisaRequest(visaRequest.id).subscribe(response => {
+        this.visaRequests = this.visaRequests.filter(val => val.id !== visaRequest.id);
         this.loadData();
         this.messageService.add({severity:'success', summary:'Successful', detail:'Visa Request Deleted', life: 3000});
-      });
-    }}
+      }, error => {
+        this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete Visa Request', life: 3000});
+    });
+}
+}
   });
 }
 
@@ -110,6 +122,7 @@ deleteSelectedVisaRequests() {
         // Ensure visaRequest.id is defined before calling deleteVisaRequest()
         if (visaRequest.id !== undefined) {
           this.visaRequestService.deleteVisaRequest(visaRequest.id).subscribe(() => {
+            this.visaRequests = this.visaRequests.filter(val => val.id !== visaRequest.id);
             this.loadData();
             this.messageService.add({severity:'success', summary:'Successful', detail:'Visa Request Deleted', life: 3000});
           });

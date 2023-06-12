@@ -11,25 +11,21 @@ export class RequestMissionComponent {
   
   activeIndex: number = 0;
   constructor(private messageService: MessageService) {}
-  onActiveIndexChange(event: any) {
-    this.activeIndex = event;
-}
+
   ngOnInit() {
       this.items = [
           {
               label: 'User Details',
               routerLink: 'step1',
-              command: (event: any) => this.messageService.add({severity:'info', summary:'First Step', detail: event.item.label})
+             
           },
           {
-              label: 'Seat',
+              label: 'Visa and Mission details',
               routerLink: 'step2',
-              command: (event: any) => this.messageService.add({severity:'info', summary:'Second Step', detail: event.item.label})
           },
           {
-              label: 'Payment',
+              label: 'Confirmation',
               routerLink: 'step3',
-              command: (event: any) => this.messageService.add({severity:'info', summary:'Third Step', detail: event.item.label})
           },
          
       ];

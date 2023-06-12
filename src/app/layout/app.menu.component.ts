@@ -49,10 +49,11 @@ export class AppMenuComponent implements OnInit {
                     { label: 'My Details', icon: 'pi pi-fw pi-user', routerLink: ['/app/my-details'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
                     { label: 'My Passports',  icon:'pi pi-fw pi-id-card', routerLink: ['/app/my-passport'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
                     { label: 'My Visas',  icon:'pi pi-fw pi-file', routerLink: ['/app/my-visa'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
-                    
+                    { label: 'My mission',  icon:'pi pi-fw pi-folder-open', routerLink: ['/app/my-mission'] , roles: ['USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] },
+
                     { label: 'Visa Request',  icon:'pi pi-fw pi-file-import', routerLink: ['/app/request'] , roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] },
                     { label: 'Mission Request',  icon:'pi pi-fw pi-briefcase', routerLink: ['/app/mission'] , roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] },
-
+                    { label: 'Mission List',  icon:'pi pi-fw pi-bars', routerLink: ['/app/table-mission'] , roles: ['ADMIN','TRAVEL_MANAGER','TEAM_LEADER'] },
                     
                 ]
             },

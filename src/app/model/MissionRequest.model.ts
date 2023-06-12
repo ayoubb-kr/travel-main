@@ -3,10 +3,13 @@ import { User } from "./User.model";
 import { Visa } from "./Visa.model";
 
 export enum RequestStatus {
-    WAITING, REJECTED, IN_PROGRESS, ACCEPTED
+    WAITING ='WAITING',
+    IN_PROGRESS = 'IN_PROGRESS',
+    SUCCESSFUL = 'SUCCESSFUL',
+    REJECTED = 'REJECTED'
 }
 
-export interface MissionRequest {
+export class MissionRequest {
     id: number;
     username:  User;
     passportId: Passport;
@@ -20,4 +23,20 @@ export interface MissionRequest {
     status: RequestStatus;
     budget: number;
     feadback: string;
+
+    constructor() {
+        this.id = 0;
+        this.username = new User(); 
+        this.passportId = new Passport(); 
+        this.visaId = new Visa(); 
+        this.dateDep = new Date();
+        this.dateRet = new Date();
+        this.days = 0;
+        this.missionObject = '';
+        this.departureCity = '';
+        this.arrivalCity = '';
+        this.status = RequestStatus.WAITING;
+        this.budget = 0;
+        this.feadback = '';
+    }
 }

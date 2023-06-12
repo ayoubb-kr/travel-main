@@ -152,7 +152,6 @@ openNew() {
                     this.users = this.users.filter(val => val.user_id !== user.user_id);
                     this.user = new User();
                     this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Deleted', life: 3000});
-                    
                 }, error => {
                     this.messageService.add({severity:'error', summary: 'Error', detail: 'Failed to delete User', life: 3000});
                 });

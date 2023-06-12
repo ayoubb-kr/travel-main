@@ -1,7 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthServiceService } from '../service/auth-service.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-error',
     templateUrl: './error.component.html',
 })
-export class ErrorComponent { }
+export class ErrorComponent implements OnInit {
+
+    constructor(private authService : AuthServiceService, private router: Router) { }
+
+        ngOnInit(): void {
+            
+        }
+
+        check()
+    {
+        const userRoles = this.authService.getUserRoles();
+    
+        // If user has ADMIN, TRAVEL_MANAGER, AGENT_RH, or TEAM_LEADER roles, navigate to Dashbord.
+        if (userRoles.some((role: string) => ['ADMIN','TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'].includes(role))) {
+          this.router.navigate(['/app/Dashbord']); 
+        } 
+        // If user has USER role, navigate to my-details.
+        else if (userRoles.includes('USER')) {
+          this.router.navigate(['/app/my-details']); 
+        }
+  
+      }
+    
+ }

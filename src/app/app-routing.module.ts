@@ -20,6 +20,8 @@ import { Step2Component } from './step2/step2.component';
 import { RequestMissionComponent } from './request-mission/request-mission.component';
 import { Step3Component } from './step3/step3.component';
 import { Step1Component } from './step1/step1.component';
+import { TableMissionComponent } from './table-mission/table-mission.component';
+import { MyMissionsComponent } from './my-missions/my-missions.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent , canActivate: [LoginGuard]},
@@ -36,7 +38,8 @@ const routes: Routes = [
       { path: 'my-visa', component: MyVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] } },
       { path: 'my-details', component: MyDetailsComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
       { path: 'my-passport', component: MyPassportComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
-     
+      { path: 'my-mission', component: MyMissionsComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','USER', 'TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
+      { path: 'table-mission', component: TableMissionComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN', 'TRAVEL_MANAGER','TEAM_LEADER'] }},
       {
         path: 'mission',
         component: RequestMissionComponent,canActivate: [RoleGuardService], data: { roles: ['ADMIN', 'TRAVEL_MANAGER','TEAM_LEADER'] },children: [
@@ -64,7 +67,7 @@ const routes: Routes = [
   { path: 'acces', component: AccessComponent },
   { path: 'error', component: ErrorComponent },
   { path: '', redirectTo: '', pathMatch: 'full' },
-
+  { path: '**', redirectTo: 'error' },
 ];
 
 @NgModule({
