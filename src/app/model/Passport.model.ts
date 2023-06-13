@@ -6,4 +6,5 @@ export class Passport {
     passExpDate?: Date;
     visas?: Visa[];
     user?: User;
+   
 }

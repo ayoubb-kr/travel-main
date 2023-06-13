@@ -2,25 +2,12 @@
  
  
 <div class="card">
-    <p-toolbar styleClass="p-mb-4">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>&nbsp;
-        </ng-template>
- 
-        
-    </p-toolbar>
- 
-    <p-table #dt [value]="passports" [rows]="6" [paginator]="true" [globalFilterFields]="['idPass','passExpDate']"
+   <p-table #dt *ngIf="passports" [value]="passports" [rows]="6" [paginator]="true" [globalFilterFields]="['idPass','passExpDate']"
         [rowHover]="true" dataKey="idPass"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="p-d-flex p-ai-center p-jc-between">
                 <h5 class="p-m-0">Manage My Passport</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
- 
-                    <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Global Search" />         
-                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -52,33 +39,12 @@
     </p-table>
 </div>
  
-<p-dialog [(visible)]="passDialog" [style]="{width: '450px',height: '700px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
-    <ng-template pTemplate="content">
-        <div class="p-field">
-            <label for="idPass">Passport ID</label>
-            <input type="text" pInputText id="idPass" [(ngModel)]="passport.idPass" required autofocus />
-            <small class="p-invalid" *ngIf="submitted && !passport.idPass">Passport ID is required.</small>
-        </div>
-        <div class="p-field">
-            <label for="PassExpDate">Passport Exp Date</label>
-            <p-calendar id="VisaExpDate" [(ngModel)]="passport.passExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
-            <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
-        </div>
-    </ng-template>
- 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="savePass()"></button>
-    </ng-template>
-</p-dialog>
-
 <p-dialog [(visible)]="updateDialog" [style]="{width: '450px', height:'650px'}" header="Passport Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
       
         <div class="p-field">
-            <label for="VisaExpDate">PassExpDate</label>
-          
-            <p-calendar id="VisaExpDate" [(ngModel)]="passport.passExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
+            <label for="PassExpDate">PassExpDate</label>
+            <p-calendar id="PassExpDate" [(ngModel)]="passport.passExpDate" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>
             <small class="p-invalid" *ngIf="submitted && !passport.passExpDate">Date is required.</small>
         </div>
     </ng-template>

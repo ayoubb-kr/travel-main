@@ -3,7 +3,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Visa } from '../model/Visa.model';
 import { VisaService } from '../service/visa.service';
 import { Passport } from '../model/Passport.model';
-import { NgForm } from '@angular/forms';
+import { UserService } from '../service/user.service';
+import { Role } from '../model/Role.model';
+
 
 @Component({
   selector: 'app-list-visa',
@@ -18,8 +20,8 @@ export class ListVisaComponent {
   selectedVisas!: Visa[];
   submitted: boolean = false;
   updateDialog!: boolean;
- 
-constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ) {
+  userRoles: string[] = [];
+constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ,private userService:UserService ) {
   this.selectedVisas = [];
   this.visa = new Visa();
   this.visa.passport = new Passport();
@@ -31,14 +33,24 @@ ngOnInit() {
     passports => this.passports = passports,
     error => console.error('There was an error!', error)
   );
+  this.getUserRoles();
 }
+
 chargevisa(){
 this.visaService.ListVisa().subscribe(visa => {
   console.log(visa);
   this.visas= visa;
     });
 }
+getUserRoles() {
+  this.userService.getRoles().subscribe((roles: Role[]) => {
+    this.userRoles = roles.map(role => role.role); 
+  });
+}
 
+checkUserHasRoles(...rolesToCheck: string[]): boolean {
+  return this.userRoles.some(role => rolesToCheck.includes(role));
+}
 openNew() {
   this.visa = new Visa();
   this.visa.passport = this.visa.passport || new Passport(); 

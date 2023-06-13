@@ -5,6 +5,8 @@ import { VisaService } from '../service/visa.service';
 import { Passport } from '../model/Passport.model';
 import { Status, VisaRequest } from '../model/VisaRequest.model';
 import { VisaRequestService } from '../service/visarequest.service.service';
+import { UserService } from '../service/user.service';
+import { Role } from '../model/Role.model';
 @Component({
   selector: 'app-demande-visa',
   templateUrl: './demande-visa.component.html',
@@ -19,13 +21,15 @@ export class DemandeVisaComponent {
   submitted: boolean = false;
   statuses = Object.values(Status);
   updatevisaRequestDialog!: boolean;
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private visaRequestService: VisaRequestService ,  private visaService : VisaService) {
+  userRoles: string[] = [];
+  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private visaRequestService: VisaRequestService ,  private visaService : VisaService ,private userService:UserService) {
     this.selectedVisaRequests = [];
   }
 
   ngOnInit() {
     this.loadData();
     this.listPassports();
+    this.getUserRoles();
   }
 
 listPassports() { 
@@ -34,6 +38,17 @@ listPassports() {
     error => console.error('There was an error!', error)
   );
 }
+getUserRoles() {
+  this.userService.getRoles().subscribe((roles: Role[]) => {
+    this.userRoles = roles.map(role => role.role); 
+  });
+}
+
+checkUserHasRoles(...rolesToCheck: string[]): boolean {
+  return this.userRoles.some(role => rolesToCheck.includes(role));
+}
+
+
 loadData() {
   this.visaRequestService.ListVisareq().subscribe(visaRequests => {
     console.log(VisaRequest);

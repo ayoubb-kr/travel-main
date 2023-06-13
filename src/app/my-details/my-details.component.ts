@@ -74,7 +74,7 @@ this.userDialog = true;
 saveUser() {
   this.submitted = true;
 
-  if (this.user.username!.trim() && this.user.password!.trim()) {
+  if (this.user.username!.trim()) {
       // Only check for unique passport id if idPass is defined.
       if (this.user.passport?.idPass && this.users.some(existingUser => existingUser.user_id !== this.user.user_id && existingUser.passport?.idPass === this.user.passport?.idPass)) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists in another user', life: 3000 });
@@ -84,6 +84,8 @@ saveUser() {
           if (!userToSend.passport?.idPass) {
               delete userToSend.passport;
           }
+          // Don't include the password when updating
+          delete userToSend.password;  
 
           if (this.user.user_id) {
               this.userService.updateUser(userToSend).subscribe(
@@ -98,20 +100,7 @@ saveUser() {
                       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update User', life: 3000 });
                   }
               );
-          } else {
-              this.userService.saveUser(userToSend).subscribe(
-                  response => {
-                      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'User Added', life: 3000 });
-                      this.getUserDetails();
-                      this.users = [...this.users]; 
-                      this.userDialog = false;
-                      this.user = new User();
-                  },
-                  error => {
-                      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add User', life: 3000 });
-                  }
-              );
-          }
+          } 
       }
   }
 }

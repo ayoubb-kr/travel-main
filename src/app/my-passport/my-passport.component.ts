@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Passport } from '../model/Passport.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { VisaService } from '../service/visa.service';
@@ -14,11 +14,11 @@ import { Router } from '@angular/router';
 export class MyPassportComponent {
   passports!: Passport[];
   passport!: Passport;
-  passDialog!: boolean;
   updateDialog!: boolean;
   submitted: boolean = false;
   user!: User;
-constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ,  private userService : UserService, private router: Router ) {
+  userRoles: string[] = [];
+constructor( private el: ElementRef,private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ,  private userService : UserService, private router: Router ) {
  
 }
 ngOnInit() {
@@ -28,27 +28,23 @@ ngOnInit() {
       this.getPassportDetails();
     } 
   });
+  
 }
+
 getPassportDetails(): void {
   const userId = this.user.user_id;
   if (userId) {
     this.visaService.getPassportByUserId(userId).subscribe(passport => {
       this.passport = passport;
-      this.passports = [this.passport];
-      console.log(this.passports)
+      // if passport is null, passports become an empty array
+      this.passports = this.passport ? [this.passport] : []; 
+      console.log(this.passports);
   }, error => {
       console.log(error);
   });
 }
+console.log("Before sending to server: ", this.passport.passExpDate);
 }
-
-openNew() {
-  this.passport = new Passport();
-  this.passDialog = true;
-
-}
-
-
 
 editPass(passport: Passport) {
   this.passport = { ...passport };
@@ -56,39 +52,8 @@ editPass(passport: Passport) {
 }
 
 hideDialog() {
-  this.passDialog = false;
   this.submitted = false;
   this.updateDialog = false;
-}
-
-
-
-
-
-savePass() {
-  this.submitted = true;
-
-  if (!this.passport.idPass || !this.passport.passExpDate) {
-      // either idPass or passExpDate is empty, so don't proceed
-      return;
-  }
-  const existingPassport = this.passports.find(p => p.idPass === this.passport.idPass);
-  if (existingPassport) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'idPass already exists. Cannot add a new passport.', life: 3000 });
-  } else {
-      this.visaService.savePass(this.passport).subscribe(
-          response => {
-              this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Added', life: 3000 });
-          },
-          error => {
-              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Passport', life: 3000 });
-          }
-      );
-  };
-
-  this.passDialog = false;
-  this.passport = new Passport();
-  this.passports = [...this.passports];
 }
 
 updatePass() {

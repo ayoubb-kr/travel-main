@@ -3,6 +3,8 @@ import { MissionRequest, RequestStatus } from '../model/MissionRequest.model';
 import { MissionRequestService } from '../service/MissionRequest.service';
 import { Status } from '../model/VisaRequest.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Role } from '../model/Role.model';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-table-mission',
@@ -17,7 +19,8 @@ export class TableMissionComponent {
   submitted!: boolean;
   RequestStatus = RequestStatus;
   statuses = Object.values(Status);
-  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private missionRequestService: MissionRequestService) { 
+  userRoles: string[] = [];
+  constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private missionRequestService: MissionRequestService ,private userService:UserService) { 
     this.selectedRequests = [];
   }
 
@@ -29,6 +32,16 @@ export class TableMissionComponent {
     this.missionRequestService.ListMissionreq().subscribe(data => {
       this.requests = data;
     });
+  }
+
+  getUserRoles() {
+    this.userService.getRoles().subscribe((roles: Role[]) => {
+      this.userRoles = roles.map(role => role.role); 
+    });
+  }
+  
+  checkUserHasRoles(...rolesToCheck: string[]): boolean {
+    return this.userRoles.some(role => rolesToCheck.includes(role));
   }
 
   deleteSelectedRequests() {

@@ -12,7 +12,7 @@
               type="text"
               required
               pInputText
-              [(ngModel)]="missionRequest.visaId.idVisa"
+              [(ngModel)]="missionRequest.visa.idVisa"
               [ngClass]="{ 'ng-dirty': (visaId.invalid && submitted) || (visaId.dirty && visaId.invalid) }"
             />
             <small *ngIf="(visaId.invalid && submitted) || (visaId.dirty && visaId.invalid)" class="p-error">Visa ID is required.</small>

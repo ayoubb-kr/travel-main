@@ -11,9 +11,9 @@ export enum RequestStatus {
 
 export class MissionRequest {
     id: number;
-    username:  User;
-    passportId: Passport;
-    visaId: Visa;
+    user:  User;
+    passport: Passport;
+    visa: Visa;
     dateDep: Date;
     dateRet: Date;
     days: number;
@@ -26,9 +26,9 @@ export class MissionRequest {
 
     constructor() {
         this.id = 0;
-        this.username = new User(); 
-        this.passportId = new Passport(); 
-        this.visaId = new Visa(); 
+        this.user = new User(); 
+        this.passport = new Passport(); 
+        this.visa = new Visa(); 
         this.dateDep = new Date();
         this.dateRet = new Date();
         this.days = 0;

@@ -29,9 +29,9 @@ export class Step1Component {
     });
     this.missionRequest = {
       id: 0,
-      username: new User(), 
-      passportId: new Passport(), 
-      visaId: new Visa(), 
+      user: new User(), 
+      passport: new Passport(), 
+      visa: new Visa(), 
       dateDep: new Date(),
       dateRet: new Date(),
       days: 0,
@@ -50,19 +50,19 @@ export class Step1Component {
   nextPage() {
     this.submitted = true;
      // Check if the username is not empty
-     if (!this.missionRequest.username.username || this.missionRequest.username.username === '') {
+     if (!this.missionRequest.user.username || this.missionRequest.user.username === '') {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Username is required', life: 3000 });
       return;
     }
 
       // Check if visa is not empty
-    if (!this.missionRequest.passportId.idPass || this.missionRequest.passportId.idPass === '') {
+    if (!this.missionRequest.passport.idPass || this.missionRequest.passport.idPass === '') {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Visa is required', life: 3000 });
       return;
     }
 
     // Check if user exists
-    this.userService.getUserByname(this.missionRequest.username.username).subscribe(user => {
+    this.userService.getUserByname(this.missionRequest.user.username).subscribe(user => {
       if (!user) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'User does not exist', life: 3000 });
         return;
@@ -74,16 +74,18 @@ export class Step1Component {
         return;
       }
   
-      this.visaService.getPassportById(this.missionRequest.passportId.idPass).subscribe(passport => {
-        this.missionRequest.passportId.passExpDate = passport.passExpDate;
-        console.log('Passport expiry date:', this.missionRequest.passportId.passExpDate);
+      this.visaService.getPassportById(this.missionRequest.passport.idPass).subscribe(passport => {
+        this.missionRequest.passport.passExpDate = passport.passExpDate;
+        console.log('Passport expiry date:', this.missionRequest.passport.passExpDate);
   
         // get the Visa related to this Passport
-        this.visaService.getVisaByIdpass(this.missionRequest.passportId.idPass).subscribe(visa => {
-          this.missionRequest.visaId = visa; 
-          this.sharedDataService.setMissionRequest(this.missionRequest);
-          this.router.navigate(['app/mission/step2']);
-          this.messageService.add({severity:'info', summary:'Second Step', detail: 'Visa and Mission details'})
+        this.visaService.getVisaByIdpass(this.missionRequest.passport.idPass).subscribe(visas => {
+          if (visas && visas.length > 0) {
+            this.missionRequest.visa = visas[0]; 
+            this.sharedDataService.setMissionRequest(this.missionRequest);
+            this.router.navigate(['app/mission/step2']);
+            this.messageService.add({severity:'info', summary:'Second Step', detail: 'Visa and Mission details'})
+          }
         });
       });
     });

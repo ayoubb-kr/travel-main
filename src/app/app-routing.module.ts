@@ -29,8 +29,8 @@ const routes: Routes = [
 
       { path: 'Dashbord', component: DashbordComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH','TEAM_LEADER'] }},
       { path: 'table', component: TableComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
-      { path: 'list-visa', component: ListVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
-      { path: 'list-passport', component: ListPassportComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] }},
+      { path: 'list-visa', component: ListVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','AGENT_RH','TRAVEL_MANAGER'] }},
+      { path: 'list-passport', component: ListPassportComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] }},
       { path: 'list-roles', component: ListRolesComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN'] } },
       { path: 'request', component: DemandeVisaComponent ,canActivate: [RoleGuardService], data: { roles: ['ADMIN','TRAVEL_MANAGER','AGENT_RH'] }},
    

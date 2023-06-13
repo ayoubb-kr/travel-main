@@ -1,9 +1,6 @@
 <p-toast></p-toast>
 
 <div class="card">
-    <p-toolbar styleClass="p-mb-4">
-    </p-toolbar>
-
     <p-table #dt [value]="missionRequests" [rows]="6" [paginator]="true" 
         [globalFilterFields]="['id', 'username', 'status', 'feadback']"
         [rowHover]="true" dataKey="id"
@@ -78,7 +75,7 @@
     <ng-template pTemplate="content">
         <div class="p-field">
             <label for="Feadback">Feadback</label>
-            <input type="text" pInputText id="Feadback" [(ngModel)]="missionRequest.feadback" />
+            <input type="text"[disabled]="isTextareaDisabled()" pInputText id="Feadback" [(ngModel)]="missionRequest.feadback" />
             <small class="p-invalid" *ngIf="submitted && !missionRequest.feadback">Feadback is required.</small>
         </div>
     </ng-template>

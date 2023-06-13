@@ -12,7 +12,7 @@
                         type="text"
                         required
                         pInputText
-                        [(ngModel)]="missionRequest.username.username"
+                        [(ngModel)]="missionRequest.user.username"
                         [ngClass]="{ 'ng-dirty': (username.invalid && submitted) || (username.dirty && username.invalid) }"
                     />
                     <small *ngIf="(username.invalid && submitted) || (username.dirty && username.invalid)" class="p-error">Username is required.</small>
@@ -25,7 +25,7 @@
                         type="text"
                         required
                         pInputText
-                        [(ngModel)]="missionRequest.passportId.idPass"
+                        [(ngModel)]="missionRequest.passport.idPass"
                         [ngClass]="{ 'ng-dirty': (passportId.invalid && submitted) || (passportId.dirty && passportId.invalid) }"
                     />
                     <small *ngIf="(passportId.invalid && submitted) || (passportId.dirty && passportId.invalid)" class="p-error">Passport ID is required.</small>

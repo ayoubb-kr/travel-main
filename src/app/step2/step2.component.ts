@@ -34,14 +34,14 @@ export class Step2Component {
   }
 
   confirmDetails(): void {
-    this.visaService.getVisaById(this.missionRequest.visaId.idVisa).subscribe(visa => {
+    this.visaService.getVisaById(this.missionRequest.visa.idVisa).subscribe(visa => {
       // If the visa doesn't exist
       if (!visa) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Visa does not exist!', life: 3000 });
         return;
       }
       // If the visa does not belong to the provided Passport ID
-      if (!visa.passport || visa.passport.idPass !== this.missionRequest.passportId.idPass) {
+      if (!visa.passport || visa.passport.idPass !== this.missionRequest.passport.idPass) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'The Visa does not belong to the provided Passport ID!', life: 3000 });
       } else {
         if (new Date(visa.visaExpDate) < this.missionRequest.dateDep || new Date(visa.visaExpDate) < this.missionRequest.dateRet) {

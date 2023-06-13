@@ -5,7 +5,7 @@
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" [routerLink]="['/app/mission']"></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length|| checkUserHasRoles('TEAM_LEADER')"></button>
         </ng-template>
 
     </p-toolbar>
@@ -27,9 +27,9 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
             <th pSortableColumn="id">Request ID <p-sortIcon field="id"></p-sortIcon></th>
-            <th pSortableColumn="username">Username <p-sortIcon field="username"></p-sortIcon></th>
-            <th pSortableColumn="passportId">Passport ID <p-sortIcon field="passportId"></p-sortIcon></th>
-            <th pSortableColumn="visaId">Visa ID <p-sortIcon field="visaId"></p-sortIcon></th>
+            <th pSortableColumn="user">Username <p-sortIcon field="user"></p-sortIcon></th>
+            <th pSortableColumn="passport">Passport ID <p-sortIcon field="passport"></p-sortIcon></th>
+            <th pSortableColumn="visa">Visa ID <p-sortIcon field="visa"></p-sortIcon></th>
             <th pSortableColumn="dateDep">Departure Date <p-sortIcon field="dateDep"></p-sortIcon></th>
             <th pSortableColumn="dateRet">Return Date <p-sortIcon field="dateRet"></p-sortIcon></th>
             <th pSortableColumn="days">Days <p-sortIcon field="days"></p-sortIcon></th>
@@ -48,9 +48,9 @@
                 <p-tableCheckbox [value]="request"></p-tableCheckbox>
             </td>
             <td>{{request.id}}</td>
-            <td>{{request.username?.username || 'No User'}}</td>
-            <td>{{request.passportId?.idPass || 'No Passport'}}</td>
-            <td>{{request.visaId?.idVisa || 'No Visa'}}</td>
+            <td>{{request.user?.username || 'No User'}}</td>
+            <td>{{request.passport?.idPass || 'No Passport'}}</td>
+            <td>{{request.visa?.idVisa || 'No Visa'}}</td>
             <td>{{request.dateDep}}</td>
             <td>{{request.dateRet}}</td>
             <td>{{request.days}}</td>
@@ -66,8 +66,8 @@
             <td>{{request.budget}}</td>
             <td>{{request.feadback}}</td>
             <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editRequest(request)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRequest(request)"></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editRequest(request)" [disabled]="checkUserHasRoles('TEAM_LEADER')"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRequest(request)" [disabled]="checkUserHasRoles('TEAM_LEADER')"></button>
             </td>
         </tr>
     </ng-template>

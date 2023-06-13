@@ -15,13 +15,14 @@ export class Step3Component {
   missionRequest!: MissionRequest;
   RequestStatus = RequestStatus;
   diffDays!: number;
-  constructor(private router: Router , private sharedDataService: SharedDataService, private missionRequestService: MissionRequestService  , private messageService: MessageService ) { }
+  constructor(private router: Router , private sharedDataService: SharedDataService, private missionRequestService: MissionRequestService  , private messageService: MessageService , private visaService:VisaService ) { }
   
   ngOnInit() {
     this.missionRequest = this.sharedDataService.getMissionRequest();
-  
+    this.diffDays = this.sharedDataService.getDiffDays();
     if (!this.missionRequest) {
       this.router.navigate(['app/mission/step2']);
+      this.messageService.add({severity:'info', summary:'Second Step', detail: 'Visa and Mission details'})
     }
   }
 
@@ -31,20 +32,33 @@ export class Step3Component {
   }
 
 
-    addMissionRequest(): void {
-     
-      this.missionRequestService.addMissionRequest(this.missionRequest)
-        .subscribe(
-          data => {
-            console.log('Mission request added successfully', data);
-            this.messageService.add({severity:'success', summary:'Success', detail:'The operation has been completed successfully'});
-            this.router.navigate(['app/table-mission']);
-          },
-          error => {
-            console.error('There was an error during the request', error);
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'The operation Failed', life: 3000 });
-            this.router.navigate(['app/mission/step1']);
-            this.messageService.add({severity:'info', summary:'First Step', detail: 'User Details'})
+  addMissionRequest(): void {
+    this.visaService.getVisaByIdpass(this.missionRequest.visa.passport.idPass).subscribe(visas => {
+      if (visas.length > 0) {
+        const visa = visas[0];
+        if (this.diffDays > visa.jours) {
+          this.messageService.add({severity:'warn', summary:'Warning', detail: 'The number of days is more than visa days.'});
+        } else {
+          visa.jours -= this.diffDays;
+          this.visaService.updateVisa(visa).subscribe(updatedVisa => {
+            this.missionRequestService.addMissionRequest(this.missionRequest)
+              .subscribe(
+                data => {
+                  console.log('Mission request added successfully', data);
+                  this.messageService.add({severity:'success', summary:'Success', detail:'The operation has been completed successfully'});
+                  this.router.navigate(['app/Dashbord']);
+                },
+                error => {
+                  console.error('There was an error during the request', error);
+                  this.messageService.add({ severity: 'error', summary: 'Error', detail: 'The operation Failed', life: 3000 });
+                  this.router.navigate(['app/mission/step1']);
+                }
+              );
           });
-    }
+        }
+      } else {
+        console.error('No visas found with the given id');
+      }
+    });
+  }
 }

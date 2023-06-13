@@ -45,8 +45,7 @@ export class AuthServiceService {
     if (this.token) {
       this.decodeJWT();
     } else {
-      // Handle the situation when the token is not available
-      // Probably, you want to redirect the user to the login page
+      this.router.navigate(['/']);
     }
     }
 
@@ -56,22 +55,6 @@ export class AuthServiceService {
   setLoggedUser(username: string) {
     this.loggedUser = username;
   }
-/*
-  SignIn(user: User): Boolean {
-    let validUser: Boolean = false;
-    this.users.forEach((curUser) => {
-      if (user.username == curUser.username && user.password == curUser.password) {
-        validUser = true;
-        this.loggedUser = curUser.username;
-        this.isloggedIn = true;
-        this.roles = curUser.roles;
-        localStorage.setItem('loggedUser', this.loggedUser);
-        localStorage.setItem('isloggedIn', String(this.isloggedIn));
-      }
-    });
-    return validUser;
-  }
-  */
 
    logout() {
     this.loggedUser = undefined!;
@@ -85,7 +68,7 @@ export class AuthServiceService {
   setLoggedUserFromLocalStorage(login: string) {
     this.loggedUser = login;
     this.isloggedIn = true;
-    //this.getUserRoles(login);
+  
   }
 
   isTokenExpired(): boolean {

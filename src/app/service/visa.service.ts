@@ -46,14 +46,14 @@ export class VisaService {
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
       return this.http.delete(url, { headers: httpHeaders });
     }
-    getVisaByIdpass(id: string) {
+    getVisaByIdpass(id: string): Observable<Visa[]> {
       const url = `${this.apiURL}/${id}`;
       let jwt = this.authService.getToken();
       jwt = "Bearer " + jwt;
       let httpHeaders = new HttpHeaders({ "Authorization": jwt })
-      return this.http.get<Visa>(url, { headers: httpHeaders });
+      return this.http.get<Visa[]>(url, { headers: httpHeaders });
     }
-
+ 
     getVisaById(id: string): Observable<Visa> {
       const url = `${this.apiURL}/id/${id}`;
       let jwt = this.authService.getToken();

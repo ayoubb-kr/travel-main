@@ -85,15 +85,12 @@
             <div class="p-field p-col">
                 <label for="password">Password</label>
                 <input type="password"  pInputText id="password" [(ngModel)]="user.password" name="password" >
-                <small class="p-invalid" *ngIf="submitted && !user.password">Password is required.</small>
             </div>
         </div>
         <div class="p-formgrid p-grid">
             <div class="p-field p-col">
                 <label for="passportId">Passport ID</label>
                 <p-dropdown [options]="passports" [(ngModel)]="user.passport" optionLabel="idPass" placeholder="Select a Passport" defaultLabel="Select a Passport"></p-dropdown>
-    
-                
             </div>
         </div>
     </ng-template>

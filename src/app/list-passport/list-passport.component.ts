@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Passport } from '../model/Passport.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { VisaService } from '../service/visa.service';
+import { UserService } from '../service/user.service';
+import { Role } from '../model/Role.model';
 
 @Component({
   selector: 'app-list-passport',
@@ -15,18 +17,29 @@ export class ListPassportComponent {
   updateDialog!: boolean;
   selectedPassports!: Passport[];
   submitted: boolean = false;
-constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ) {
+  userRoles: string[] = [];
+constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService, private userService: UserService ) {
   this.selectedPassports = [];
   
 }
 ngOnInit() {
   this.chargepass();
+  this.getUserRoles();
 }
 chargepass(){
 this.visaService.listePass().subscribe(passport => {
   this.passports= passport;
 
     });
+}
+getUserRoles() {
+  this.userService.getRoles().subscribe((roles: Role[]) => {
+    this.userRoles = roles.map(role => role.role); 
+  });
+}
+
+checkUserHasRoles(...rolesToCheck: string[]): boolean {
+  return this.userRoles.some(role => rolesToCheck.includes(role));
 }
 
 openNew() {
@@ -47,6 +60,7 @@ deleteSelectedPass() {
           // On successful deletion from the backend, remove the passport from the local passport array
           this.passports = this.passports.filter(val => val.idPass !== passport.idPass);
           this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Deleted', life: 3000 });
+
         }, error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to Delete Passport', life: 3000 });
         });
@@ -102,13 +116,14 @@ savePass() {
       this.visaService.savePass(this.passport).subscribe(
           response => {
               this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Added', life: 3000 });
+              this.chargepass();
           },
           error => {
               this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add Passport', life: 3000 });
           }
       );
   };
-  this.chargepass();
+  
   this.passDialog = false;
   this.passport = new Passport();
   this.passports = [...this.passports];
@@ -126,6 +141,7 @@ updatePass() {
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Passport Updated', life: 3000 });
       this.updateDialog = false;
       this.passport = new Passport();
+      this.chargepass();
     },
     error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Passport', life: 3000 });

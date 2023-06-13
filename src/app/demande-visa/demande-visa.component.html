@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisaRequests()" [disabled]="!selectedVisaRequests || !selectedVisaRequests.length"></button>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()" ></button>&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisaRequests()"  [disabled]="!selectedVisaRequests || !selectedVisaRequests.length "></button>
         </ng-template>
     </p-toolbar>
 
@@ -52,7 +52,7 @@
               <td>{{visaRequest.passport.idPass}}</td>
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editVisaRequest(visaRequest)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteVisaRequest(visaRequest)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteVisaRequest(visaRequest)" ></button>
               </td>
             </tr>
           </ng-template>
@@ -106,7 +106,7 @@
 
         <div class="p-field">
             <label for="status">Status</label>
-            <p-dropdown [options]="statuses" [(ngModel)]="visaRequest.status" placeholder="Select a Status"></p-dropdown>
+            <p-dropdown [options]="statuses" [(ngModel)]="visaRequest.status" placeholder="Select a Status" ></p-dropdown>
             <small class="p-invalid" *ngIf="submitted && !visaRequest.status">Status is required.</small>
         </div>
 

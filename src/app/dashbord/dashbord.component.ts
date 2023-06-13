@@ -21,6 +21,7 @@ export class DashbordComponent {
   passport!: Passport;
   missions!:MissionRequest[];
   mission!:MissionRequest;
+  currentDate = new Date();
   constructor( private userService : UserService , private visaService : VisaService, private missionRequestService: MissionRequestService ) {
  
     

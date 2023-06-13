@@ -100,6 +100,7 @@ saveRole() {
  
       this.userService.updateRole(this.role).subscribe(
         response => {
+          this.chargerole();
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role updated', life: 3000 });
     },error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update Role', life: 3000 });
@@ -108,6 +109,7 @@ saveRole() {
   } else {
     this.userService.saveRole(this.role).subscribe(
       response => {
+        this.chargerole();
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Role Added', life: 3000 });
       },
       error => {
