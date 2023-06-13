@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { VisaService } from '../service/visa.service';
 import { UserService } from '../service/user.service';
 import { Role } from '../model/Role.model';
+import { User } from '../model/User.model';
 
 @Component({
   selector: 'app-list-passport',
@@ -18,13 +19,22 @@ export class ListPassportComponent {
   selectedPassports!: Passport[];
   submitted: boolean = false;
   userRoles: string[] = [];
+  user!: User;
 constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService, private userService: UserService ) {
   this.selectedPassports = [];
   
 }
 ngOnInit() {
   this.chargepass();
-  this.getUserRoles();
+  this.userService.getLoggedUserData().subscribe(
+    data => {
+      if (data !== null) {
+        this.user = data;
+        this.userRoles = this.user.roles.map((roleObj: any) => roleObj.role);
+        console.log('User roles:', this.userRoles); // Add this line
+      }
+    }
+  );;
 }
 chargepass(){
 this.visaService.listePass().subscribe(passport => {
@@ -32,14 +42,16 @@ this.visaService.listePass().subscribe(passport => {
 
     });
 }
-getUserRoles() {
-  this.userService.getRoles().subscribe((roles: Role[]) => {
-    this.userRoles = roles.map(role => role.role); 
-  });
-}
 
-checkUserHasRoles(...rolesToCheck: string[]): boolean {
-  return this.userRoles.some(role => rolesToCheck.includes(role));
+disableButton(role: string) {
+  console.log(`Checking for role: ${role}`); 
+  console.log(`Current user roles: ${this.userRoles}`); 
+
+  if (this.userRoles.includes(role)) {
+    console.log(`Role ${role} found. Disabling button.`); 
+    return true;
+  }
+  return false;
 }
 
 openNew() {

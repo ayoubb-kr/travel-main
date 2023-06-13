@@ -6,18 +6,18 @@
         <div class="p-fluid">
           <div class="field">
             <label for="visaId">Visa ID</label>
-            <input
+            <p-dropdown 
               #visaId="ngModel"
               id="visaId"
-              type="text"
-              required
-              pInputText
               [(ngModel)]="missionRequest.visa.idVisa"
-              [ngClass]="{ 'ng-dirty': (visaId.invalid && submitted) || (visaId.dirty && visaId.invalid) }"
-            />
-            <small *ngIf="(visaId.invalid && submitted) || (visaId.dirty && visaId.invalid)" class="p-error">Visa ID is required.</small>
+              [options]="visas"
+              optionLabel="idVisa"
+              optionValue="idVisa"
+              [ngClass]="{ 'ng-dirty': (visaId.invalid && (submitted || visaId.dirty)) }">
+            </p-dropdown>
+            <small *ngIf="visaId.invalid && (submitted || visaId.dirty)" class="p-error">Visa ID is required.</small>
           </div>
-         
+          
           <div class="field">
             <label for="rangeDates">Departure Date</label>
             <p-calendar id="rangeDates" [(ngModel)]="rangeDates" (ngModelChange)="onRangeDatesChanged()" selectionMode="range" [readonlyInput]="true" [showButtonBar]="true" [showButtonBar]="true" inputId="icon" [showIcon]="true"></p-calendar>

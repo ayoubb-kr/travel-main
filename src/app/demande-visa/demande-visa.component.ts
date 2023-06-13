@@ -22,6 +22,8 @@ export class DemandeVisaComponent {
   statuses = Object.values(Status);
   updatevisaRequestDialog!: boolean;
   userRoles: string[] = [];
+  roles!: Role[];
+  role!: Role;
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private visaRequestService: VisaRequestService ,  private visaService : VisaService ,private userService:UserService) {
     this.selectedVisaRequests = [];
   }
@@ -29,23 +31,24 @@ export class DemandeVisaComponent {
   ngOnInit() {
     this.loadData();
     this.listPassports();
-    this.getUserRoles();
+    this.chargerole();
   }
-
+  chargerole(){
+    this.userService.getRoles().subscribe((roles: Role[]) => {
+      console.log(this.role);
+      this.userRoles = roles.map(role => role.role);
+        });
+    }
 listPassports() { 
   this.visaService.listePass().subscribe(
     passports => this.passports = passports,
     error => console.error('There was an error!', error)
   );
 }
-getUserRoles() {
-  this.userService.getRoles().subscribe((roles: Role[]) => {
-    this.userRoles = roles.map(role => role.role); 
-  });
-}
 
-checkUserHasRoles(...rolesToCheck: string[]): boolean {
-  return this.userRoles.some(role => rolesToCheck.includes(role));
+
+isAgentRH(): boolean {
+  return this.userRoles.includes('AGENT_RH');
 }
 
 

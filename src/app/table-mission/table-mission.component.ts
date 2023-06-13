@@ -5,6 +5,7 @@ import { Status } from '../model/VisaRequest.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Role } from '../model/Role.model';
 import { UserService } from '../service/user.service';
+import { User } from '../model/User.model';
 
 @Component({
   selector: 'app-table-mission',
@@ -20,12 +21,23 @@ export class TableMissionComponent {
   RequestStatus = RequestStatus;
   statuses = Object.values(Status);
   userRoles: string[] = [];
+  user!:User;
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private missionRequestService: MissionRequestService ,private userService:UserService) { 
     this.selectedRequests = [];
   }
 
   ngOnInit() {
     this.getMissionRequests();
+    this.getUserRoles();
+    this.userService.getLoggedUserData().subscribe(
+      data => {
+        if (data !== null) {
+          this.user = data;
+          this.userRoles = this.user.roles.map((roleObj: any) => roleObj.role);
+          console.log('User roles:', this.userRoles); // Add this line
+        }
+      }
+    );;
   }
 
   getMissionRequests() {
@@ -39,10 +51,17 @@ export class TableMissionComponent {
       this.userRoles = roles.map(role => role.role); 
     });
   }
+  disableButton(role: string) {
+    console.log(`Checking for role: ${role}`); 
+    console.log(`Current user roles: ${this.userRoles}`); 
   
-  checkUserHasRoles(...rolesToCheck: string[]): boolean {
-    return this.userRoles.some(role => rolesToCheck.includes(role));
+    if (this.userRoles.includes(role)) {
+      console.log(`Role ${role} found. Disabling button.`); 
+      return true;
+    }
+    return false;
   }
+
 
   deleteSelectedRequests() {
     this.confirmationService.confirm({

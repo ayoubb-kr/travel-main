@@ -3,8 +3,8 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()" ></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisaRequests()"  [disabled]="!selectedVisaRequests || !selectedVisaRequests.length "></button>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()" [disabled]="isAgentRH()" ></button>&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisaRequests()"  [disabled]="!selectedVisaRequests || !selectedVisaRequests.length || isAgentRH()"></button>
         </ng-template>
     </p-toolbar>
 
@@ -52,7 +52,7 @@
               <td>{{visaRequest.passport.idPass}}</td>
               <td>
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editVisaRequest(visaRequest)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteVisaRequest(visaRequest)" ></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteVisaRequest(visaRequest)" [disabled]="isAgentRH()" ></button>
               </td>
             </tr>
           </ng-template>
@@ -94,13 +94,13 @@
     <ng-template pTemplate="content">
         <div class="p-field">
             <label for="type">Type</label>
-            <input type="text" pInputText id="type" [(ngModel)]="visaRequest.type" required autofocus />
+            <input type="text" pInputText id="type" [(ngModel)]="visaRequest.type" required autofocus [disabled]="isAgentRH()"  />
             <small class="p-invalid" *ngIf="submitted && !visaRequest.type">Type is required.</small>
         </div>
 
         <div class="p-field">
             <label for="destination">Destination</label>
-            <input type="text" pInputText id="destination" [(ngModel)]="visaRequest.destination" required />
+            <input type="text" pInputText id="destination" [(ngModel)]="visaRequest.destination" required  [disabled]="isAgentRH()" />
             <small class="p-invalid" *ngIf="submitted && !visaRequest.destination">Destination is required.</small>
         </div>
 
@@ -112,7 +112,7 @@
 
         <div class="p-field">
             <label for="passportId">Passport ID</label>
-            <p-dropdown [options]="passports" [(ngModel)]="visaRequest.passport" optionLabel="idPass" placeholder="Select a Passport"></p-dropdown>
+            <p-dropdown [options]="passports" [(ngModel)]="visaRequest.passport" optionLabel="idPass" placeholder="Select a Passport" [disabled]="isAgentRH()" ></p-dropdown>
             <small class="p-invalid" *ngIf="submitted && !visaRequest.passport">Passport is required.</small>
         </div>
     </ng-template>

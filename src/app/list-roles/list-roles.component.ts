@@ -96,8 +96,15 @@ saveRole() {
   this.submitted = true;
 
   if (this.role.role!.trim() ) {
+
+   // check if role with same name already exists
+   const roleExists = this.roles.some(existingRole => existingRole.role.toUpperCase() === this.role.role.toUpperCase());
+   if (roleExists) {
+     this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Role already exists', life: 3000 });
+     return;
+   }
+
     if (this.role.role_id) {
- 
       this.userService.updateRole(this.role).subscribe(
         response => {
           this.chargerole();

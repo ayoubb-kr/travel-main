@@ -4,8 +4,8 @@
 <div class="card">
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"  ></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisa()"   [disabled]="!selectedVisas || !selectedVisas.length "></button>
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()" [disabled]="disableButton('AGENT_RH')" ></button>&nbsp;
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedVisa()"   [disabled]="!selectedVisas || !selectedVisas.length || disableButton('AGENT_RH')"></button>
         </ng-template>
  
         
@@ -48,8 +48,8 @@
               <td>{{visa.mois}}</td>
              <td>{{ visa.passport.idPass}}</td>
               <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editVisa(visa)"  ></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deleteVisa(visa)"  ></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)=" editVisa(visa)" [disabled]="disableButton('AGENT_RH')" ></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)=" deleteVisa(visa)"  [disabled]="disableButton('AGENT_RH')"></button>
               </td>
             </tr>
           </ng-template>

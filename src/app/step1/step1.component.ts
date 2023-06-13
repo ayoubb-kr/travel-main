@@ -68,10 +68,11 @@ export class Step1Component {
         return;
       }
   
-      // Check if passport exists
-      if (!user.passport) {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport does not belong to user', life: 3000 });
-        return;
+      
+    // Check if passport exists and if it belongs to the user
+        if (!user.passport || user.passport.idPass !== this.missionRequest.passport.idPass) {
+         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport does not belong to user or does not exist', life: 3000 });
+       return;
       }
   
       this.visaService.getPassportById(this.missionRequest.passport.idPass).subscribe(passport => {

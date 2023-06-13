@@ -44,7 +44,13 @@ export class MissionRequestService {
           let httpHeaders = new HttpHeaders({ "Authorization": jwt })
           return this.http.delete(url, { headers: httpHeaders });
          }
-       
-
+         
+         getMissionByIdpass(id: string): Observable<MissionRequest[]> {
+          const url = `${this.apiURL}/idpass/${id}`;
+          let jwt = this.authService.getToken();
+          jwt = "Bearer " + jwt;
+          let httpHeaders = new HttpHeaders({ "Authorization": jwt })
+          return this.http.get<MissionRequest[]>(url, { headers: httpHeaders });
+        }
 
     }

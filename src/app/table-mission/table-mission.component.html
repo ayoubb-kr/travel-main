@@ -5,7 +5,7 @@
     <p-toolbar styleClass="p-mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" [routerLink]="['/app/mission']"></button>&nbsp;
-            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length|| checkUserHasRoles('TEAM_LEADER')"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedRequests()" [disabled]="!selectedRequests || !selectedRequests.length|| disableButton('TEAM_LEADER')"></button>
         </ng-template>
 
     </p-toolbar>
@@ -66,8 +66,8 @@
             <td>{{request.budget}}</td>
             <td>{{request.feadback}}</td>
             <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editRequest(request)" [disabled]="checkUserHasRoles('TEAM_LEADER')"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRequest(request)" [disabled]="checkUserHasRoles('TEAM_LEADER')"></button>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editRequest(request)" [disabled]="disableButton('TEAM_LEADER')"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteRequest(request)" [disabled]="disableButton('TEAM_LEADER')"></button>
             </td>
         </tr>
     </ng-template>

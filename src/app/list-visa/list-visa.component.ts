@@ -5,6 +5,7 @@ import { VisaService } from '../service/visa.service';
 import { Passport } from '../model/Passport.model';
 import { UserService } from '../service/user.service';
 import { Role } from '../model/Role.model';
+import { User } from '../model/User.model';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class ListVisaComponent {
   submitted: boolean = false;
   updateDialog!: boolean;
   userRoles: string[] = [];
+  user!:User;
 constructor( private messageService: MessageService, private confirmationService: ConfirmationService, private visaService : VisaService ,private userService:UserService ) {
   this.selectedVisas = [];
   this.visa = new Visa();
@@ -33,7 +35,15 @@ ngOnInit() {
     passports => this.passports = passports,
     error => console.error('There was an error!', error)
   );
-  this.getUserRoles();
+  this.userService.getLoggedUserData().subscribe(
+    data => {
+      if (data !== null) {
+        this.user = data;
+        this.userRoles = this.user.roles.map((roleObj: any) => roleObj.role);
+        console.log('User roles:', this.userRoles); // Add this line
+      }
+    }
+  );;
 }
 
 chargevisa(){
@@ -42,15 +52,17 @@ this.visaService.ListVisa().subscribe(visa => {
   this.visas= visa;
     });
 }
-getUserRoles() {
-  this.userService.getRoles().subscribe((roles: Role[]) => {
-    this.userRoles = roles.map(role => role.role); 
-  });
+disableButton(role: string) {
+  console.log(`Checking for role: ${role}`); 
+  console.log(`Current user roles: ${this.userRoles}`); 
+
+  if (this.userRoles.includes(role)) {
+    console.log(`Role ${role} found. Disabling button.`); 
+    return true;
+  }
+  return false;
 }
 
-checkUserHasRoles(...rolesToCheck: string[]): boolean {
-  return this.userRoles.some(role => rolesToCheck.includes(role));
-}
 openNew() {
   this.visa = new Visa();
   this.visa.passport = this.visa.passport || new Passport(); 
@@ -91,9 +103,7 @@ hideDialog() {
 }
 
 saveVisa() {
-  if (this.visas.some(existingUser => existingUser.passport?.idPass === this.visa.passport?.idPass)) {
-    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Passport ID already exists in onther user', life: 3000 });
-  } else {
+ 
   this.visaService.saveVisa(this.visa).subscribe(
         response => {
           console.log('Visa saved successfully!');
@@ -110,7 +120,7 @@ saveVisa() {
       this.visas = [...this.visas];
       this.visa.passport = {idPass: ''};
     }
-  }
+  
     updatePass() {
   
       this.visaService.updateVisa(this.visa).subscribe(

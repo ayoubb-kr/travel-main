@@ -4,7 +4,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { UserService } from '../service/user.service';
 import { AuthServiceService } from '../service/auth-service.service';
 import { VisaService } from '../service/visa.service';
-import { Passport } from '../model/Passport.model';
 import { User } from '../model/User.model';
 
 @Component({

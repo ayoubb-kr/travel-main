@@ -11,7 +11,7 @@ export enum RequestStatus {
 
 export class MissionRequest {
     id: number;
-    user:  User;
+    user: User;
     passport: Passport;
     visa: Visa;
     dateDep: Date;
