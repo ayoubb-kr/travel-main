@@ -46,7 +46,7 @@ export class Step3Component {
                 data => {
                   console.log('Mission request added successfully', data);
                   this.messageService.add({severity:'success', summary:'Success', detail:'The operation has been completed successfully'});
-                  this.router.navigate(['app/Dashbord']);
+                  this.router.navigate(['app/table-mission']);
                 },
                 error => {
                   console.error('There was an error during the request', error);
