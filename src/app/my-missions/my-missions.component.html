@@ -19,7 +19,6 @@
                
             </th>
             <th pSortableColumn="id">Request ID <p-sortIcon field="id"></p-sortIcon></th>
-            <th pSortableColumn="user">Username <p-sortIcon field="user"></p-sortIcon></th>
             <th pSortableColumn="passport">Passport ID <p-sortIcon field="passport"></p-sortIcon></th>
             <th pSortableColumn="visa">Visa ID <p-sortIcon field="visa"></p-sortIcon></th>
             <th pSortableColumn="dateDep">Departure Date <p-sortIcon field="dateDep"></p-sortIcon></th>
@@ -40,7 +39,6 @@
               
             </td>
             <td>{{request.id}}</td>
-            <td>{{request.user?.username || 'No User'}}</td>
             <td>{{request.passport?.idPass || 'No Passport'}}</td>
             <td>{{request.visa?.idVisa || 'No Visa'}}</td>
             <td>{{request.dateDep}}</td>
